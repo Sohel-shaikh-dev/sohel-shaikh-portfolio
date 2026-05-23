@@ -792,7 +792,7 @@ export default function PortfolioClient({
       <div ref={heroAboutRef} className="relative">
         {/* Hero Section */}
         <main id="home" className="pt-24 md:pt-32 pb-12 md:pb-20 px-4 md:px-6">
-          <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-start md:items-center">
+          <div className="max-w-7xl mx-auto grid grid-cols-2 gap-4 md:gap-12 items-start md:items-center">
 
             {/* Content */}
             <motion.div

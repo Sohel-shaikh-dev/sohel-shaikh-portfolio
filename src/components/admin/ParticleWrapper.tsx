@@ -9,8 +9,13 @@ export const ParticleWrapper = ({ children, className = '' }: { children: React.
   const [particles, setParticles] = useState<any[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const childOnKeyDown = children.props.onKeyDown;
-  const childOnChange = children.props.onChange;
+  let childOnKeyDown: any;
+  let childOnChange: any;
+
+  if (React.isValidElement(children)) {
+    childOnKeyDown = (children.props as any).onKeyDown;
+    childOnChange = (children.props as any).onChange;
+  }
 
   const handleInput = (e: any) => {
     if (e.type === 'keydown' && childOnKeyDown) childOnKeyDown(e);

@@ -1,0 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+@import "tailwindcss";
+@source "../";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --color-primary: #ff014f;
+  --color-background: #212428;
+  --color-card: #212428;
+  --shadow-dark: 10px 10px 19px #1c1e22, -10px -10px 19px #262a2e;
+  --shadow-dark-inner: inset 5px 5px 10px #1c1e22, inset -5px -5px 10px #262a2e;
+}
+
+@layer base {
+  body {
+    @apply bg-background text-white font-sans antialiased;
+  }
+}
+
+.neumorphic {
+  box-shadow: var(--shadow-dark);
+}
+
+.neumorphic-inner {
+  box-shadow: var(--shadow-dark-inner);
+}

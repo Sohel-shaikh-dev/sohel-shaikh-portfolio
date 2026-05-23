@@ -177,7 +177,7 @@ const ProjectTiltCard = ({ project, index }: { project: any, index: number, key?
               <div className="w-1 h-1 rounded-full bg-gray-600"></div>
             </div>
           </div>
-          <h3 className="text-xl md:text-sm md:text-xl font-bold text-white mb-1 md:mb-4 group-hover:text-primary transition-colors leading-tight">
+          <h3 className="text-lg md:text-sm md:text-xl font-bold text-white mb-1 md:mb-4 group-hover:text-primary transition-colors leading-tight">
             {project.title}
           </h3>
           <p className="text-gray-500 text-[9px] md:text-sm leading-snug md:leading-relaxed mb-0 md:mb-4 line-clamp-3 md:line-clamp-none flex-grow">
@@ -271,13 +271,13 @@ const CaseStudyCard = ({ study, index }: { study: any, index: number, key?: any 
             <h4 className="text-gray-100 font-bold mb-2 flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-primary/50 group-hover/item:bg-primary group-hover/item:shadow-[0_0_10px_rgba(255,1,79,0.8)] transition-all"></span> The Challenge
             </h4>
-            <p className="text-gray-500 text-xl md:text-sm leading-relaxed pl-4 border-l border-white/5 group-hover/item:border-primary/30 transition-colors">{study.challenge}</p>
+            <p className="text-gray-500 text-lg md:text-sm leading-relaxed pl-4 border-l border-white/5 group-hover/item:border-primary/30 transition-colors">{study.challenge}</p>
           </div>
           <div className="group/item">
             <h4 className="text-gray-100 font-bold mb-2 flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-blue-500/50 group-hover/item:bg-blue-500 group-hover/item:shadow-[0_0_10px_rgba(59,130,246,0.8)] transition-all"></span> The Solution
             </h4>
-            <p className="text-gray-500 text-xl md:text-sm leading-relaxed pl-4 border-l border-white/5 group-hover/item:border-blue-500/30 transition-colors">{study.solution}</p>
+            <p className="text-gray-500 text-lg md:text-sm leading-relaxed pl-4 border-l border-white/5 group-hover/item:border-blue-500/30 transition-colors">{study.solution}</p>
           </div>
 
           {/* Glowing Key Result Box */}
@@ -384,7 +384,7 @@ const Service3DCard = ({ skill, index }: { skill: any, index: number, key?: any 
           <div className="mb-4 md:mb-8 p-2 md:p-4 bg-background/50 inline-block rounded-xl md:rounded-2xl neumorphic-inner text-primary group-hover:shadow-[0_0_20px_rgba(255,1,79,0.3)] transition-all">
             {skill.icon}
           </div>
-          <h3 className="text-xl md:text-sm md:text-2xl font-bold mb-2 md:mb-5 text-white group-hover:text-primary transition-colors leading-tight">
+          <h3 className="text-lg md:text-sm md:text-2xl font-bold mb-2 md:mb-5 text-white group-hover:text-primary transition-colors leading-tight">
             {skill.title}
           </h3>
           <p className="text-[10px] md:text-base text-gray-400 leading-snug md:leading-relaxed group-hover:text-gray-300 transition-colors">
@@ -582,7 +582,7 @@ const PolicyModal = ({ isOpen, onClose, type }: { isOpen: boolean, onClose: () =
     privacy: {
       title: "Privacy Policy",
       text: (
-        <div className="space-y-4 text-gray-400 text-xl md:text-sm md:text-base leading-relaxed">
+        <div className="space-y-4 text-gray-400 text-lg md:text-sm md:text-base leading-relaxed">
           <p>I respect your privacy. Any information you share through this portfolio, including your contact details and project requirements, is strictly used for our direct communication.</p>
           <p>I do not sell your data to third parties, nor do I use tracking cookies to follow you around the internet. Your project ideas and business data remain strictly confidential.</p>
         </div>
@@ -591,7 +591,7 @@ const PolicyModal = ({ isOpen, onClose, type }: { isOpen: boolean, onClose: () =
     terms: {
       title: "Terms of Service",
       text: (
-        <div className="space-y-4 text-gray-400 text-xl md:text-sm md:text-base leading-relaxed">
+        <div className="space-y-4 text-gray-400 text-lg md:text-sm md:text-base leading-relaxed">
           <p>By using this website, you agree to keep things professional. The case studies, code snippets, and projects displayed here are my original, proprietary work or shared with explicit permission.</p>
           <p>Please do not copy, scrape, or repurpose my work for your own commercial use without my permission. If we decide to collaborate on a freelance project, specific terms, timelines, and NDAs will be discussed and agreed upon separately.</p>
         </div>
@@ -630,7 +630,7 @@ const PolicyModal = ({ isOpen, onClose, type }: { isOpen: boolean, onClose: () =
         <div className="mt-8 pt-6 border-t border-white/10 flex justify-end">
           <button
             onClick={onClose}
-            className="px-6 py-2.5 bg-primary text-white font-bold rounded-xl text-xl md:text-sm hover:scale-105 transition-transform cursor-pointer shadow-[0_0_15px_rgba(255,1,79,0.3)]"
+            className="px-6 py-2.5 bg-primary text-white font-bold rounded-xl text-lg md:text-sm hover:scale-105 transition-transform cursor-pointer shadow-[0_0_15px_rgba(255,1,79,0.3)]"
           >
             I Understand
           </button>
@@ -737,14 +737,14 @@ export default function PortfolioClient({
               <a
                 key={link.name}
                 href={link.href}
-                className="text-xl md:text-sm font-medium text-gray-400 hover:text-white transition-colors"
+                className="text-lg md:text-sm font-medium text-gray-400 hover:text-white transition-colors"
               >
                 {link.name}
               </a>
             ))}
             <a
               href="#contact"
-              className="px-6 py-2.5 bg-primary text-white rounded-full font-semibold text-xl md:text-sm hover:scale-105 transition-transform shadow-[0_0_20px_rgba(255,1,79,0.3)]"
+              className="px-6 py-2.5 bg-primary text-white rounded-full font-semibold text-lg md:text-sm hover:scale-105 transition-transform shadow-[0_0_20px_rgba(255,1,79,0.3)]"
             >
               Hire Me
             </a>
@@ -804,12 +804,12 @@ export default function PortfolioClient({
               <span className="inline-block text-gray-400 tracking-[0.1em] md:tracking-[0.2em] font-medium text-[10px] sm:text-xs md:text-sm mb-2 md:mb-6 uppercase">
                 Welcome to my world
               </span>
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-extrabold leading-[1.1] mb-4 md:mb-8">
+              <h1 className="text-4xl sm:text-5xl md:text-5xl lg:text-7xl font-extrabold leading-[1.1] mb-4 md:mb-8">
                 Hi, I'm <br className="block md:hidden" /><span className="text-primary tracking-tight">Sohel Shaikh</span>
                 <br />
-                <span className="text-gray-100 text-lg sm:text-xl md:text-3xl lg:text-4xl block mt-1 md:mt-2">a Professional Data Analyst.</span>
+                <span className="text-gray-100 text-2xl sm:text-3xl md:text-3xl lg:text-4xl block mt-1 md:mt-2">a Professional Data Analyst.</span>
               </h1>
-              <p className="text-gray-400 text-xl md:text-sm md:text-lg leading-relaxed max-w-xl mb-6 md:mb-12">
+              <p className="text-gray-400 text-lg md:text-sm md:text-lg leading-relaxed max-w-xl mb-6 md:mb-12">
                 Detail-oriented and analytical Data Analyst with strong skills in Power BI, SQL, DAX, and Excel.
                 Experienced in building interactive dashboards and transforming raw data into meaningful business insights.
               </p>
@@ -989,7 +989,7 @@ export default function PortfolioClient({
                           <div className="w-2 h-2 rounded-full bg-primary"></div>
                           Exploratory Analysis
                         </h3>
-                        <p className="text-gray-500 text-xl md:text-sm leading-relaxed">
+                        <p className="text-gray-500 text-lg md:text-sm leading-relaxed">
                           Deep diving into datasets to discover patterns, anomalies, and relationships using SQL, Excel, and Power BI.
                         </p>
                       </div>
@@ -998,7 +998,7 @@ export default function PortfolioClient({
                           <div className="w-2 h-2 rounded-full bg-blue-500"></div>
                           Business Intelligence
                         </h3>
-                        <p className="text-gray-500 text-xl md:text-sm leading-relaxed">
+                        <p className="text-gray-500 text-lg md:text-sm leading-relaxed">
                           Building interactive dashboards and automated reporting systems using Tableau, Power BI, and SQL.
                         </p>
                       </div>
@@ -1120,7 +1120,7 @@ export default function PortfolioClient({
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-primary uppercase tracking-[0.3em] text-xl md:text-sm font-bold block mb-4"
+              className="text-primary uppercase tracking-[0.3em] text-lg md:text-sm font-bold block mb-4"
             >
               Expertise
             </motion.span>
@@ -1439,7 +1439,7 @@ export default function PortfolioClient({
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-primary uppercase tracking-[0.3em] text-xl md:text-sm font-bold block mb-4"
+              className="text-primary uppercase tracking-[0.3em] text-lg md:text-sm font-bold block mb-4"
             >
               Detailed Analytics Walkthrough
             </motion.span>
@@ -1509,7 +1509,7 @@ export default function PortfolioClient({
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-primary uppercase tracking-[0.3em] text-xl md:text-sm font-bold block mb-4"
+              className="text-primary uppercase tracking-[0.3em] text-lg md:text-sm font-bold block mb-4"
             >
               Features
             </motion.span>
@@ -1580,7 +1580,7 @@ export default function PortfolioClient({
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
-              className="text-gray-400 text-xl md:text-base md:text-lg max-w-xl mx-auto"
+              className="text-gray-400 text-lg md:text-base md:text-lg max-w-xl mx-auto"
             >
               Let's discuss how we can transform your reporting and analytics into actionable business intelligence.
             </motion.p>
@@ -1604,7 +1604,7 @@ export default function PortfolioClient({
                       name="name"
                       required
                       placeholder="Sohel Shaikh"
-                      className="w-full bg-background border border-white/5 rounded-xl px-5 py-3.5 text-xl md:text-sm text-white focus:outline-none neumorphic-inner focus:border-primary/50 transition-all placeholder:text-gray-700 relative z-10"
+                      className="w-full bg-background border border-white/5 rounded-xl px-5 py-3.5 text-lg md:text-sm text-white focus:outline-none neumorphic-inner focus:border-primary/50 transition-all placeholder:text-gray-700 relative z-10"
                     />
                   </ParticleWrapper>
                 </div>
@@ -1615,7 +1615,7 @@ export default function PortfolioClient({
                       type="text"
                       name="phone"
                       placeholder="+91 7718938615"
-                      className="w-full bg-background border border-white/5 rounded-xl px-5 py-3.5 text-xl md:text-sm text-white focus:outline-none neumorphic-inner focus:border-primary/50 transition-all placeholder:text-gray-700 relative z-10"
+                      className="w-full bg-background border border-white/5 rounded-xl px-5 py-3.5 text-lg md:text-sm text-white focus:outline-none neumorphic-inner focus:border-primary/50 transition-all placeholder:text-gray-700 relative z-10"
                     />
                   </ParticleWrapper>
                 </div>
@@ -1627,7 +1627,7 @@ export default function PortfolioClient({
                       name="email"
                       required
                       placeholder="sohel82.shaikh@gmail.com"
-                      className="w-full bg-background border border-white/5 rounded-xl px-5 py-3.5 text-xl md:text-sm text-white focus:outline-none neumorphic-inner focus:border-primary/50 transition-all placeholder:text-gray-700 relative z-10"
+                      className="w-full bg-background border border-white/5 rounded-xl px-5 py-3.5 text-lg md:text-sm text-white focus:outline-none neumorphic-inner focus:border-primary/50 transition-all placeholder:text-gray-700 relative z-10"
                     />
                   </ParticleWrapper>
                 </div>
@@ -1639,7 +1639,7 @@ export default function PortfolioClient({
                       name="subject"
                       required
                       placeholder="Data Project"
-                      className="w-full bg-background border border-white/5 rounded-xl px-5 py-3.5 text-xl md:text-sm text-white focus:outline-none neumorphic-inner focus:border-primary/50 transition-all placeholder:text-gray-700 relative z-10"
+                      className="w-full bg-background border border-white/5 rounded-xl px-5 py-3.5 text-lg md:text-sm text-white focus:outline-none neumorphic-inner focus:border-primary/50 transition-all placeholder:text-gray-700 relative z-10"
                     />
                   </ParticleWrapper>
                 </div>
@@ -1653,7 +1653,7 @@ export default function PortfolioClient({
                     name="message"
                     required
                     placeholder="Tell me about your project..."
-                    className="w-full bg-background border border-white/5 rounded-xl px-5 py-3.5 text-xl md:text-sm text-white focus:outline-none neumorphic-inner focus:border-primary/50 transition-all resize-none placeholder:text-gray-700 relative z-10"
+                    className="w-full bg-background border border-white/5 rounded-xl px-5 py-3.5 text-lg md:text-sm text-white focus:outline-none neumorphic-inner focus:border-primary/50 transition-all resize-none placeholder:text-gray-700 relative z-10"
                   ></textarea>
                 </ParticleWrapper>
               </div>
@@ -1681,7 +1681,7 @@ export default function PortfolioClient({
                 </div>
                 <div>
                   <p className="text-[10px] uppercase font-bold text-gray-500 tracking-widest">Call Me</p>
-                  <p className="text-xl md:text-sm text-gray-200 font-bold">+91 7718938615</p>
+                  <p className="text-lg md:text-sm text-gray-200 font-bold">+91 7718938615</p>
                 </div>
               </div>
               <div className="flex items-center gap-4">
@@ -1690,7 +1690,7 @@ export default function PortfolioClient({
                 </div>
                 <div>
                   <p className="text-[10px] uppercase font-bold text-gray-500 tracking-widest">Email Me</p>
-                  <p className="text-xl md:text-sm text-gray-200 font-bold break-all">sohel82.shaikh@gmail.com</p>
+                  <p className="text-lg md:text-sm text-gray-200 font-bold break-all">sohel82.shaikh@gmail.com</p>
                 </div>
               </div>
             </div>
@@ -1727,7 +1727,7 @@ export default function PortfolioClient({
             {/* About Column */}
             <div className="space-y-8">
               <h4 className="text-white font-bold text-lg uppercase tracking-[0.2em]">About Me</h4>
-              <p className="text-gray-500 leading-relaxed text-xl md:text-base">
+              <p className="text-gray-500 leading-relaxed text-lg md:text-base">
                 Data Analyst & BI Specialist dedicated to turning complex data into visual stories that drive smart decisions.
               </p>
               <div className="flex gap-4">
@@ -1754,7 +1754,7 @@ export default function PortfolioClient({
                   <li key={link.name}>
                     <a
                       href={link.href}
-                      className="text-gray-500 hover:text-primary transition-all flex items-center gap-3 group text-xl md:text-base font-medium"
+                      className="text-gray-500 hover:text-primary transition-all flex items-center gap-3 group text-lg md:text-base font-medium"
                     >
                       <span className="w-2 h-[2px] bg-primary scale-x-0 group-hover:scale-x-100 transition-transform origin-left rounded-full"></span>
                       {link.name}
@@ -1775,7 +1775,7 @@ export default function PortfolioClient({
                   "Data ETL Pipelines",
                   "Big Data Solutions"
                 ].map((service) => (
-                  <li key={service} className="text-gray-500 text-xl md:text-base font-medium flex items-center gap-3">
+                  <li key={service} className="text-gray-500 text-lg md:text-base font-medium flex items-center gap-3">
                     <div className="w-1.5 h-1.5 rounded-full bg-primary/30"></div>
                     {service}
                   </li>
@@ -1793,7 +1793,7 @@ export default function PortfolioClient({
                   </div>
                   <div>
                     <p className="text-[10px] uppercase font-bold text-gray-500 tracking-widest">Phone</p>
-                    <p className="text-gray-200 font-bold text-xl md:text-sm tracking-wide">+91 7718938615</p>
+                    <p className="text-gray-200 font-bold text-lg md:text-sm tracking-wide">+91 7718938615</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-4 group cursor-pointer">
@@ -1802,7 +1802,7 @@ export default function PortfolioClient({
                   </div>
                   <div>
                     <p className="text-[10px] uppercase font-bold text-gray-500 tracking-widest">Email</p>
-                    <p className="text-gray-200 font-bold text-xl md:text-sm break-all">sohel82.shaikh@gmail.com</p>
+                    <p className="text-gray-200 font-bold text-lg md:text-sm break-all">sohel82.shaikh@gmail.com</p>
                   </div>
                 </div>
               </div>
@@ -1810,14 +1810,14 @@ export default function PortfolioClient({
           </div>
 
           <div className="pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8">
-            <div className="flex flex-col md:flex-row items-center gap-4 md:gap-8 text-gray-600 text-xl md:text-sm font-semibold tracking-wider uppercase">
+            <div className="flex flex-col md:flex-row items-center gap-4 md:gap-8 text-gray-600 text-lg md:text-sm font-semibold tracking-wider uppercase">
               <span className="hover:text-primary cursor-default transition-colors">© 2026 Analytics Portfolio</span>
               <div className="hidden md:block w-px h-4 bg-white/10"></div>
               <a href="#privacy" onClick={(e) => { e.preventDefault(); setActiveModal('privacy'); }} className="hover:text-white transition-colors">Privacy Policy</a>
               <a href="#terms" onClick={(e) => { e.preventDefault(); setActiveModal('terms'); }} className="hover:text-white transition-colors">Terms of Service</a>
             </div>
 
-            <p className="text-gray-500 text-xl md:text-sm font-medium tracking-wide bg-card px-6 py-3 rounded-full border border-white/5 neumorphic-inner">
+            <p className="text-gray-500 text-lg md:text-sm font-medium tracking-wide bg-card px-6 py-3 rounded-full border border-white/5 neumorphic-inner">
               Crafted with <span className="text-primary mx-1">❤</span> by <span className="text-white font-bold">Sohel Shaikh</span>
             </p>
           </div>

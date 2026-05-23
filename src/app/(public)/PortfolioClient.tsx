@@ -57,17 +57,17 @@ const ExperienceCard = ({ exp, index, isLast }: { exp: any, index: number, isLas
       {!isLast && (
         <motion.div
           style={{ scaleY: scrollYProgress, opacity: lineOpacity }}
-          className="absolute left-1/2 -translate-x-1/2 w-[2px] md:w-[3px] bg-primary z-10 shadow-[0_0_15px_#ff014f] origin-top top-10 -bottom-16 md:-bottom-10"
+          className="absolute left-6 md:left-1/2 -translate-x-1/2 w-[2px] md:w-[3px] bg-primary z-10 shadow-[0_0_15px_#ff014f] origin-top top-10 -bottom-16 md:-bottom-10"
         />
       )}
 
       {/* The Timeline Dot (Glows based on scroll progress) */}
       <motion.div
         style={{ backgroundColor: dotColor, scale: dotScale, boxShadow: dotShadow }}
-        className="absolute top-10 left-1/2 -translate-x-1/2 w-3 h-3 md:w-4 md:h-4 rounded-full z-20 border-[2px] border-background transition-colors"
+        className="absolute top-10 left-6 md:left-1/2 -translate-x-1/2 w-3 h-3 md:w-4 md:h-4 rounded-full z-20 border-[2px] border-background transition-colors"
       />
 
-      <div className={`w-[45%] ${exp.side === 'left' ? 'ml-0 mr-auto' : 'ml-auto mr-0'}`}>
+      <div className={`w-[calc(100%-4rem)] md:w-[45%] ${exp.side === 'left' ? 'ml-auto md:ml-0 md:mr-auto' : 'ml-auto mr-0'}`}>
         <motion.div
           initial={{ opacity: 0, x: exp.side === 'left' ? -30 : 30 }}
           whileInView={{ opacity: 1, x: 0 }}
@@ -89,7 +89,7 @@ const ExperienceCard = ({ exp, index, isLast }: { exp: any, index: number, isLas
           </p>
 
           {/* Connector Arrow */}
-          <div className={`absolute top-9 w-3 h-3 md:w-4 md:h-4 bg-card border-white/5 border-t border-l rotate-[-45deg] ${exp.side === 'left' ? '-right-1.5 md:-right-2 rotate-[135deg]' : '-left-1.5 md:-left-2'}`}></div>
+          <div className={`absolute top-9 w-3 h-3 md:w-4 md:h-4 bg-card border-white/5 border-t border-l -left-1.5 rotate-[-45deg] ${exp.side === 'left' ? 'md:-right-2 md:left-auto md:rotate-[135deg]' : 'md:-left-2'}`}></div>
         </motion.div>
       </div>
     </div>

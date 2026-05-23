@@ -12,7 +12,7 @@ export async function addExperience(data: any) {
     throw new Error(error.message)
   }
 
-  revalidateTag('experiences')
+  revalidateTag('experiences', 'max')
 }
 
 export async function deleteExperience(id: string) {
@@ -20,7 +20,7 @@ export async function deleteExperience(id: string) {
     const supabase = await createClient()
     const { error } = await supabase.from('experiences').delete().eq('id', id)
     if (error) throw new Error(error.message)
-    revalidateTag('experiences')
+    revalidateTag('experiences', 'max')
     return { success: true }
   } catch (err: any) {
     return { success: false, error: err.message }
@@ -30,5 +30,5 @@ export async function updateExperience(id: string, data: any) {
   const supabase = await createClient()
   const { error } = await supabase.from('experiences').update(data).eq('id', id)
   if (error) throw new Error(error.message)
-  revalidateTag('experiences')
+  revalidateTag('experiences', 'max')
 }

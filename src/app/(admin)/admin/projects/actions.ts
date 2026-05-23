@@ -12,7 +12,7 @@ export async function addProject(data: any) {
     throw new Error(error.message)
   }
 
-  revalidateTag('projects')
+  revalidateTag('projects', 'max')
 }
 
 export async function deleteProject(id: string) {
@@ -34,7 +34,7 @@ export async function deleteProject(id: string) {
 
     const { error } = await supabase.from('projects').delete().eq('id', id)
     if (error) throw new Error(error.message)
-    revalidateTag('projects')
+    revalidateTag('projects', 'max')
     return { success: true }
   } catch (err: any) {
     return { success: false, error: err.message }
@@ -63,5 +63,5 @@ export async function updateProject(id: string, data: any) {
 
   const { error } = await supabase.from('projects').update(data).eq('id', id)
   if (error) throw new Error(error.message)
-  revalidateTag('projects')
+  revalidateTag('projects', 'max')
 }

@@ -16,14 +16,14 @@ export async function POST(request: Request) {
     
     if (table) {
       // Revalidate the tag corresponding to the table name
-      revalidateTag(table)
+      revalidateTag(table, 'max')
       console.log(`Revalidated tag: ${table}`)
     } else {
       // Fallback: revalidate everything or common tags
-      revalidateTag('projects')
-      revalidateTag('case_studies')
-      revalidateTag('certifications')
-      revalidateTag('experiences')
+      revalidateTag('projects', 'max')
+      revalidateTag('case_studies', 'max')
+      revalidateTag('certifications', 'max')
+      revalidateTag('experiences', 'max')
     }
 
     return NextResponse.json({ revalidated: true, now: Date.now() })

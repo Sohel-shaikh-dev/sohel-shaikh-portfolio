@@ -18,7 +18,7 @@ export async function addCaseStudy(data: any) {
     throw new Error(error.message)
   }
 
-  revalidateTag('case_studies')
+  revalidateTag('case_studies', 'max')
 }
 
 export async function deleteCaseStudy(id: string) {
@@ -32,7 +32,7 @@ export async function deleteCaseStudy(id: string) {
 
     const { error } = await supabase.from('case_studies').delete().eq('id', id)
     if (error) throw new Error(error.message)
-    revalidateTag('case-studies')
+    revalidateTag('case-studies', 'max')
     return { success: true }
   } catch (err: any) {
     return { success: false, error: err.message }
@@ -53,5 +53,5 @@ export async function updateCaseStudy(id: string, data: any) {
   }
   const { error } = await supabase.from('case_studies').update(formattedData).eq('id', id)
   if (error) throw new Error(error.message)
-  revalidateTag('case_studies')
+  revalidateTag('case_studies', 'max')
 }

@@ -22,7 +22,24 @@ import {
   Mail,
   ArrowRight,
   ChevronUp,
-  ChevronDown
+  ChevronDown,
+  User,
+  Globe,
+  Star,
+  Code,
+  Cpu,
+  PenTool,
+  Layout,
+  Layers,
+  Youtube,
+  Send,
+  MessageCircle,
+  Users,
+  Zap,
+  Trophy,
+  Rocket,
+  Settings,
+  Sparkles
 } from 'lucide-react';
 import React, { useState, useRef, useTransition } from 'react';
 import { ScrollyCanvas } from '../../components/ScrollyCanvas';
@@ -575,6 +592,159 @@ const FloatingWhatsApp = () => {
   );
 };
 
+const AboutDeveloperModal = ({ isOpen, onClose, onContactClick }: { isOpen: boolean, onClose: () => void, onContactClick: () => void }) => {
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+          onClick={onClose}
+        >
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+            onClick={(e) => e.stopPropagation()}
+            className="relative w-full max-w-md bg-[#0A0A0A] rounded-3xl border border-white/5 p-5 md:p-6 overflow-hidden shadow-2xl max-h-[95vh] flex flex-col"
+          >
+            {/* Top Glow */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-24 bg-yellow-500/10 blur-[60px] rounded-full pointer-events-none"></div>
+
+            <button
+              onClick={onClose}
+              className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-white/5 border border-white/10 text-gray-400 hover:text-white hover:bg-white/10 transition-colors z-10"
+            >
+              <X size={18} />
+            </button>
+
+            <div className="flex flex-col items-center relative z-10 overflow-y-auto overflow-x-hidden no-scrollbar pr-1 pb-1">
+              <div className="flex flex-col items-center justify-center mb-3">
+                <div className="flex items-center gap-2 text-yellow-500 font-bold tracking-widest text-[10px] md:text-xs border-b-[1.5px] border-yellow-500 pb-1">
+                  <Users size={14} />
+                  <span>ABOUT DEVELOPER</span>
+                </div>
+              </div>
+
+              <div className="relative mb-3 flex justify-center">
+                <div className="w-24 h-24 md:w-28 md:h-28 rounded-full p-[2px] bg-gradient-to-b from-yellow-300 to-yellow-600 shadow-[0_0_30px_rgba(234,179,8,0.3)]">
+                  <div className="w-full h-full rounded-full overflow-hidden border-[3px] border-[#0A0A0A]">
+                    <img src="/frames/ezgif-frame-001.jpg" alt="Sohel Shaikh" className="w-full h-full object-cover object-[center_20%]" />
+                  </div>
+                </div>
+              </div>
+
+              <h2 className="text-2xl md:text-3xl font-normal mb-1 tracking-wide text-white text-center">
+                SOHEL <span className="font-bold text-yellow-500">SHAIKH</span>
+              </h2>
+              <p className="text-gray-400 text-[8px] md:text-[9px] tracking-[0.25em] uppercase mb-3 text-center font-medium">
+                Founder & Creative Developer
+              </p>
+
+              <div className="flex items-center justify-center gap-3 w-full max-w-[150px] mx-auto mb-3">
+                <div className="h-[1px] flex-grow bg-gradient-to-r from-transparent to-yellow-500/50"></div>
+                <Star size={10} className="text-yellow-500 fill-yellow-500" />
+                <div className="h-[1px] flex-grow bg-gradient-to-l from-transparent to-yellow-500/50"></div>
+              </div>
+
+              <p className="text-center text-gray-200 text-xs leading-snug mb-4 px-2 font-medium">
+                I build premium AI-powered digital experiences, modern websites, and creative solutions that help brands grow and stand out.
+              </p>
+
+              {/* Expertise */}
+              <div className="w-full border border-yellow-500/10 rounded-xl p-3 md:p-4 mb-4 bg-[#111111]/30">
+                <div className="flex items-center gap-2 text-yellow-500 font-bold text-[10px] tracking-widest mb-3">
+                  <Rocket size={12} />
+                  <span>EXPERTISE</span>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {[
+                    { icon: Code, label: "Web Development" },
+                    { icon: Cpu, label: "AI Solutions" },
+                    { icon: PenTool, label: "UI/UX Design" },
+                    { icon: Star, label: "Branding" },
+                    { icon: Layout, label: "Power BI Dashboards" },
+                    { icon: Settings, label: "Automation" },
+                    { icon: Layers, label: "React & Supabase" }
+                  ].map((skill, i) => (
+                    <div key={i} className="flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-yellow-500/20 bg-transparent text-gray-200 text-[9px] md:text-[10px] font-medium transition-colors hover:border-yellow-500/40">
+                      <skill.icon size={10} className="text-yellow-500" />
+                      {skill.label}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Stats */}
+              <div className="w-full border border-yellow-500/10 rounded-xl p-3 mb-4 bg-[#111111]/30 grid grid-cols-4 divide-x divide-white/10">
+                {[
+                  { icon: Star, num: "15+", text: "Projects Completed" },
+                  { icon: Users, num: "8+", text: "Happy Clients" },
+                  { icon: Zap, num: "24/7", text: "Support Available" },
+                  { icon: Trophy, num: "100%", text: "Client Satisfaction" }
+                ].map((stat, i) => (
+                  <div key={i} className="flex flex-col items-center justify-center text-center px-1">
+                    <stat.icon size={14} className="text-yellow-500 mb-1" />
+                    <div className="text-lg font-bold text-yellow-500 mb-0.5">{stat.num}</div>
+                    <div className="text-[6px] md:text-[7px] text-gray-400 uppercase tracking-widest leading-[1.2] font-semibold">{stat.text}</div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Socials & Connect */}
+              <div className="w-full text-left mb-3 px-1">
+                <div className="inline-flex items-center gap-1.5 text-yellow-500 text-[9px] tracking-widest uppercase font-bold border-b border-yellow-500 pb-0.5">
+                  <Sparkles size={10} />
+                  <span>CONNECT WITH ME</span>
+                </div>
+              </div>
+              <div className="flex justify-center flex-wrap gap-3 mb-5 w-full px-2">
+                <a href="https://instagram.com/ai_metaworld" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-pink-500/40 flex items-center justify-center text-pink-500 hover:bg-pink-500 hover:text-white transition-all shadow-[0_0_10px_rgba(236,72,153,0.15)]">
+                  <Instagram size={16} />
+                </a>
+                <a href="https://www.linkedin.com/in/sohel-shaikhh/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-blue-500/40 flex items-center justify-center text-blue-500 hover:bg-blue-500 hover:text-white transition-all shadow-[0_0_10px_rgba(59,130,246,0.15)]">
+                  <Linkedin size={16} />
+                </a>
+                <a href="https://github.com/Sohel-shaikh-dev" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-white/30 flex items-center justify-center text-white hover:bg-white hover:text-black transition-all shadow-[0_0_10px_rgba(255,255,255,0.1)]">
+                  <Github size={16} />
+                </a>
+                <a href="https://www.youtube.com/@Aimetaworld" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-red-500/40 flex items-center justify-center text-red-500 hover:bg-red-500 hover:text-white transition-all shadow-[0_0_10px_rgba(239,68,68,0.15)]">
+                  <Youtube size={16} />
+                </a>
+                <a href="https://www.facebook.com/share/1asBpmQEbw/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-blue-600/40 flex items-center justify-center text-blue-600 hover:bg-blue-600 hover:text-white transition-all shadow-[0_0_10px_rgba(37,99,235,0.15)]">
+                  <Facebook size={16} />
+                </a>
+                <a href="mailto:aimetaworldd@gmail.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-orange-500/40 flex items-center justify-center text-orange-500 hover:bg-orange-500 hover:text-white transition-all shadow-[0_0_10px_rgba(249,115,22,0.15)]">
+                  <Mail size={16} />
+                </a>
+              </div>
+
+              {/* CTA Button */}
+              <a 
+                href="https://wa.me/917718938615"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={onClose}
+                className="w-full py-3 rounded-xl bg-gradient-to-r from-[#F2C14E] to-[#D59832] text-black font-bold text-xs tracking-wide flex items-center justify-center gap-2 hover:scale-[1.02] transition-transform shadow-[0_0_20px_rgba(234,179,8,0.3)] mb-4"
+              >
+                <Send size={14} className="fill-black" />
+                LET'S BUILD SOMETHING AMAZING
+              </a>
+
+              <div className="flex items-center justify-center gap-2 text-gray-400 text-[10px] font-medium w-full pb-1">
+                <MessageCircle size={12} />
+                I'm open to exciting opportunities!
+              </div>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+};
+
 const PolicyModal = ({ isOpen, onClose, type }: { isOpen: boolean, onClose: () => void, type: 'privacy' | 'terms' | null }) => {
   if (!isOpen || !type) return null;
 
@@ -656,6 +826,7 @@ export default function PortfolioClient({
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeModal, setActiveModal] = useState<'privacy' | 'terms' | null>(null);
   const [showAllProjects, setShowAllProjects] = useState(false);
+  const [isDeveloperModalOpen, setIsDeveloperModalOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
   const [alertInfo, setAlertInfo] = useState<{isOpen: boolean, title: string, message: string, type: 'success'|'error'}>({
     isOpen: false, title: '', message: '', type: 'success'
@@ -742,6 +913,13 @@ export default function PortfolioClient({
                 {link.name}
               </a>
             ))}
+            <button
+              onClick={() => setIsDeveloperModalOpen(true)}
+              className="px-4 py-2.5 bg-yellow-500/10 border border-yellow-500/20 text-yellow-500 rounded-full font-semibold text-lg md:text-sm hover:scale-105 hover:bg-yellow-500/20 transition-all flex items-center gap-2"
+            >
+              <User size={16} />
+              About Developer
+            </button>
             <a
               href="#contact"
               className="px-6 py-2.5 bg-primary text-white rounded-full font-semibold text-lg md:text-sm hover:scale-105 transition-transform shadow-[0_0_20px_rgba(255,1,79,0.3)]"
@@ -777,6 +955,16 @@ export default function PortfolioClient({
                   {link.name}
                 </a>
               ))}
+              <button
+                onClick={() => {
+                  setIsMenuOpen(false);
+                  setIsDeveloperModalOpen(true);
+                }}
+                className="w-full py-4 bg-yellow-500/10 border border-yellow-500/20 text-yellow-500 rounded-xl font-bold text-center flex items-center justify-center gap-2"
+              >
+                <User size={18} />
+                About Developer
+              </button>
               <a
                 href="#contact"
                 className="w-full py-4 bg-primary text-white rounded-xl font-bold text-center"
@@ -1842,6 +2030,7 @@ export default function PortfolioClient({
               <div className="hidden md:block w-px h-4 bg-white/10"></div>
               <a href="#privacy" onClick={(e) => { e.preventDefault(); setActiveModal('privacy'); }} className="hover:text-white transition-colors">Privacy Policy</a>
               <a href="#terms" onClick={(e) => { e.preventDefault(); setActiveModal('terms'); }} className="hover:text-white transition-colors">Terms of Service</a>
+              <a href="#developer" onClick={(e) => { e.preventDefault(); setIsDeveloperModalOpen(true); }} className="hover:text-yellow-500 text-yellow-500/80 font-bold transition-colors flex items-center gap-1"><User size={14} /> About Developer</a>
             </div>
 
             <p className="text-gray-500 text-lg md:text-sm font-medium tracking-wide bg-card px-6 py-3 rounded-full border border-white/5 neumorphic-inner">
@@ -1862,6 +2051,17 @@ export default function PortfolioClient({
           />
         )}
       </AnimatePresence>
+
+      <AboutDeveloperModal 
+        isOpen={isDeveloperModalOpen} 
+        onClose={() => setIsDeveloperModalOpen(false)} 
+        onContactClick={() => {
+          const contactSection = document.getElementById('contact');
+          if (contactSection) {
+            contactSection.scrollIntoView({ behavior: 'smooth' });
+          }
+        }}
+      />
 
       <AlertModal 
         isOpen={alertInfo.isOpen}

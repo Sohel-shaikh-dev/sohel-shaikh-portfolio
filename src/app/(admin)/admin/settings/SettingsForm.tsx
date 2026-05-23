@@ -82,7 +82,7 @@ export function SettingsForm({ initialData }: { initialData: any }) {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div>
-            <label className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-2 block ml-2">Projects Done</label>
+            <label className="text-[12px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-2 block ml-2">Projects Done</label>
             <ParticleWrapper>
               <input 
                 required 
@@ -94,7 +94,7 @@ export function SettingsForm({ initialData }: { initialData: any }) {
           </div>
 
           <div>
-            <label className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-2 block ml-2">Happy Clients</label>
+            <label className="text-[12px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-2 block ml-2">Happy Clients</label>
             <ParticleWrapper>
               <input 
                 required 
@@ -106,7 +106,7 @@ export function SettingsForm({ initialData }: { initialData: any }) {
           </div>
 
           <div>
-            <label className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-2 block ml-2">Success Rate</label>
+            <label className="text-[12px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-2 block ml-2">Success Rate</label>
             <ParticleWrapper>
               <input 
                 required 
@@ -119,7 +119,7 @@ export function SettingsForm({ initialData }: { initialData: any }) {
         </div>
 
         <div>
-          <label className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-2 block ml-2">Resume / CV (.pdf)</label>
+          <label className="text-[12px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-2 block ml-2">Resume / CV (.pdf)</label>
           {formData.cv_pdf_path ? (
             <div className="w-full rounded-2xl px-5 py-4 bg-background border border-white/5 neumorphic-inner flex items-center justify-between">
               <span className="text-sm text-gray-300 truncate">Uploaded: {formData.cv_pdf_path}</span>

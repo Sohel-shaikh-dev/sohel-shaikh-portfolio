@@ -74,11 +74,11 @@ export function FileUpload({
             <UploadCloud size={20} />
           </div>
         )}
-        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-2 group-hover:text-white transition-colors">
+        <p className="text-[12px] font-bold text-gray-400 uppercase tracking-widest mt-2 group-hover:text-white transition-colors">
           {uploading ? 'Uploading...' : 'Click or drag file to upload'}
         </p>
       </div>
-      {error && <p className="text-red-500 text-[10px] uppercase tracking-widest mt-4 font-bold">{error}</p>}
+      {error && <p className="text-red-500 text-[12px] uppercase tracking-widest mt-4 font-bold">{error}</p>}
     </motion.div>
   )
 }

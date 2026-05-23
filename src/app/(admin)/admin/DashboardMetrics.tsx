@@ -24,7 +24,7 @@ export function DashboardMetrics({ stats }: { stats: any }) {
           className="bg-card border border-white/5 p-6 sm:p-8 rounded-3xl neumorphic flex items-center justify-between group"
         >
           <div>
-            <h3 className="text-gray-400 font-bold uppercase tracking-widest text-[10px] mb-2">{card.title}</h3>
+            <h3 className="text-gray-400 font-bold uppercase tracking-widest text-[12px] mb-2">{card.title}</h3>
             <p className="text-4xl sm:text-5xl font-extrabold text-white">{card.value}</p>
           </div>
           <div className="w-14 h-14 rounded-2xl bg-background neumorphic-inner flex items-center justify-center border border-white/5 group-hover:scale-110 transition-transform">

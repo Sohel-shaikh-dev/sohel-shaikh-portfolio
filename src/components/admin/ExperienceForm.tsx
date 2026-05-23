@@ -72,7 +72,7 @@ export function ExperienceForm({ initialData }: { initialData?: any }) {
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <label className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-2 block ml-2">Job Title</label>
+          <label className="text-[12px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-2 block ml-2">Job Title</label>
           <ParticleWrapper>
             <input 
               required 
@@ -83,7 +83,7 @@ export function ExperienceForm({ initialData }: { initialData?: any }) {
           </ParticleWrapper>
         </div>
         <div>
-          <label className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-2 block ml-2">Company Name</label>
+          <label className="text-[12px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-2 block ml-2">Company Name</label>
           <ParticleWrapper>
             <input 
               required 
@@ -96,7 +96,7 @@ export function ExperienceForm({ initialData }: { initialData?: any }) {
       </div>
 
       <div>
-        <label className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-2 block ml-2">Date Range</label>
+        <label className="text-[12px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-2 block ml-2">Date Range</label>
         <ParticleWrapper>
           <input 
             required 
@@ -109,7 +109,7 @@ export function ExperienceForm({ initialData }: { initialData?: any }) {
       </div>
 
       <div>
-        <label className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-2 block ml-2">Description</label>
+        <label className="text-[12px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-2 block ml-2">Description</label>
         <ParticleWrapper>
           <textarea 
             required 

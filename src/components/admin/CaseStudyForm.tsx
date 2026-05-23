@@ -78,7 +78,7 @@ export function CaseStudyForm({ initialData }: { initialData?: any }) {
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <label className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-2 block ml-2">Title</label>
+          <label className="text-[12px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-2 block ml-2">Title</label>
           <ParticleWrapper>
 <input 
             required 
@@ -89,7 +89,7 @@ export function CaseStudyForm({ initialData }: { initialData?: any }) {
 </ParticleWrapper>
         </div>
         <div>
-          <label className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-2 block ml-2">Subtitle</label>
+          <label className="text-[12px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-2 block ml-2">Subtitle</label>
           <ParticleWrapper>
 <input 
             required 
@@ -102,7 +102,7 @@ export function CaseStudyForm({ initialData }: { initialData?: any }) {
       </div>
 
       <div>
-        <label className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-2 block ml-2">The Challenge</label>
+        <label className="text-[12px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-2 block ml-2">The Challenge</label>
         <ParticleWrapper>
           <textarea 
             required 
@@ -115,7 +115,7 @@ export function CaseStudyForm({ initialData }: { initialData?: any }) {
       </div>
 
       <div>
-        <label className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-2 block ml-2">The Solution</label>
+        <label className="text-[12px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-2 block ml-2">The Solution</label>
         <ParticleWrapper>
           <textarea 
             required 
@@ -129,7 +129,7 @@ export function CaseStudyForm({ initialData }: { initialData?: any }) {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <label className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-2 block ml-2">Key Result</label>
+          <label className="text-[12px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-2 block ml-2">Key Result</label>
         <ParticleWrapper>
 <input 
           required 
@@ -142,7 +142,7 @@ export function CaseStudyForm({ initialData }: { initialData?: any }) {
         </div>
 
         <div>
-          <label className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-2 block ml-2">Tags (Comma Separated)</label>
+          <label className="text-[12px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-2 block ml-2">Tags (Comma Separated)</label>
         <ParticleWrapper>
 <input 
           required 
@@ -156,7 +156,7 @@ export function CaseStudyForm({ initialData }: { initialData?: any }) {
       </div>
 
       <div>
-        <label className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-2 block ml-2">Cover Image</label>
+        <label className="text-[12px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-2 block ml-2">Cover Image</label>
         {formData.cover_image_path ? (
           <div className="w-full rounded-2xl px-5 py-4 bg-background border border-white/5 neumorphic-inner flex items-center justify-between">
             <span className="text-sm text-gray-300 truncate">Uploaded</span>

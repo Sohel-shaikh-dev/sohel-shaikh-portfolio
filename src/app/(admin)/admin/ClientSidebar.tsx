@@ -47,7 +47,7 @@ export function ClientSidebar({ signOutAction }: { signOutAction: () => void }) 
         </div>
 
         <nav className="flex flex-col gap-3 flex-grow">
-          <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2 px-4">Menu</span>
+          <span className="text-[12px] font-bold text-gray-500 uppercase tracking-widest mb-2 px-4">Menu</span>
           {links.map((link) => {
             const isActive = pathname === link.href
             return (

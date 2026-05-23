@@ -74,7 +74,7 @@ export function ProjectForm({ initialData }: { initialData?: any }) {
       </div>
       
       <div>
-        <label className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-2 block ml-2">Project Title</label>
+        <label className="text-[12px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-2 block ml-2">Project Title</label>
         <ParticleWrapper>
 <input 
           required 
@@ -86,7 +86,7 @@ export function ProjectForm({ initialData }: { initialData?: any }) {
       </div>
 
       <div>
-        <label className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-2 block ml-2">Category</label>
+        <label className="text-[12px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-2 block ml-2">Category</label>
         <ParticleWrapper>
 <input 
           required 
@@ -99,7 +99,7 @@ export function ProjectForm({ initialData }: { initialData?: any }) {
       </div>
 
       <div>
-        <label className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-2 block ml-2">Description</label>
+        <label className="text-[12px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-2 block ml-2">Description</label>
         <ParticleWrapper>
           <textarea 
             required 
@@ -113,7 +113,7 @@ export function ProjectForm({ initialData }: { initialData?: any }) {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div>
-          <label className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-2 block ml-2">Thumbnail Image</label>
+          <label className="text-[12px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-2 block ml-2">Thumbnail Image</label>
           {formData.thumbnail_path ? (
             <div className="w-full rounded-2xl px-5 py-4 bg-background border border-white/5 neumorphic-inner flex items-center justify-between">
               <span className="text-sm text-gray-300 truncate">Uploaded</span>
@@ -125,7 +125,7 @@ export function ProjectForm({ initialData }: { initialData?: any }) {
         </div>
         
         <div>
-          <label className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-2 block ml-2">Power BI (.pbix)</label>
+          <label className="text-[12px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-2 block ml-2">Power BI (.pbix)</label>
           {formData.pbix_file_path ? (
             <div className="w-full rounded-2xl px-5 py-4 bg-background border border-white/5 neumorphic-inner flex items-center justify-between">
               <span className="text-sm text-gray-300 truncate">Uploaded</span>
@@ -137,7 +137,7 @@ export function ProjectForm({ initialData }: { initialData?: any }) {
         </div>
 
         <div>
-          <label className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-2 block ml-2">PDF Report (.pdf)</label>
+          <label className="text-[12px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-2 block ml-2">PDF Report (.pdf)</label>
           {formData.pdf_export_path ? (
             <div className="w-full rounded-2xl px-5 py-4 bg-background border border-white/5 neumorphic-inner flex items-center justify-between">
               <span className="text-sm text-gray-300 truncate">Uploaded</span>

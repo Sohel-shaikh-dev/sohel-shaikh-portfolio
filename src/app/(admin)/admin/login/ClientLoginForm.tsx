@@ -30,7 +30,7 @@ export function ClientLoginForm({
         <h2 className="text-3xl font-extrabold mb-8 text-center tracking-tight">Admin<span className="text-primary">.dev</span></h2>
         
         <div className="mb-4">
-          <label className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-2 block ml-2" htmlFor="email">
+          <label className="text-[12px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-2 block ml-2" htmlFor="email">
             Email Address
           </label>
           <input
@@ -42,7 +42,7 @@ export function ClientLoginForm({
         </div>
         
         <div className="mb-8">
-          <label className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-2 block ml-2" htmlFor="password">
+          <label className="text-[12px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-2 block ml-2" htmlFor="password">
             Password
           </label>
           <input

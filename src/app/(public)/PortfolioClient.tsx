@@ -76,15 +76,15 @@ const ExperienceCard = ({ exp, index, isLast }: { exp: any, index: number, isLas
           className="p-5 md:p-8 bg-card rounded-2xl md:rounded-3xl neumorphic border border-white/5 relative group hover:bg-gradient-to-br from-[#1e2124] to-[#23272b] transition-all"
         >
           <div className="flex flex-wrap items-center justify-between gap-2 md:gap-4 mb-3 md:mb-6">
-            <span className="px-3 md:px-4 py-1 md:py-1.5 bg-background rounded-md md:rounded-lg text-primary text-[10px] md:text-xs font-bold neumorphic-inner">
+            <span className="px-3 md:px-4 py-1 md:py-1.5 bg-background rounded-md md:rounded-lg text-primary text-[12px] md:text-xs font-bold neumorphic-inner">
               {exp.year}
             </span>
-            <p className="text-gray-500 text-[10px] md:text-sm font-semibold">{exp.company}</p>
+            <p className="text-gray-500 text-[12px] md:text-sm font-semibold">{exp.company}</p>
           </div>
           <h3 className="text-lg md:text-2xl font-bold text-white mb-2 md:mb-4 group-hover:text-primary transition-colors">
             {exp.title}
           </h3>
-          <p className="text-gray-400 leading-relaxed text-[10px] md:text-sm">
+          <p className="text-gray-400 leading-relaxed text-[12px] md:text-sm">
             {exp.desc}
           </p>
 
@@ -170,7 +170,7 @@ const ProjectTiltCard = ({ project, index }: { project: any, index: number, key?
 
         <div className="px-1 md:px-2 flex flex-col flex-grow">
           <div className="flex justify-between items-center mb-2 md:mb-4">
-            <span className="text-primary text-[7px] md:text-[10px] font-bold uppercase tracking-widest truncate mr-2">{project.category}</span>
+            <span className="text-primary text-[8px] md:text-[12px] font-bold uppercase tracking-widest truncate mr-2">{project.category}</span>
             <div className="flex gap-1 shrink-0">
               <div className="w-1 h-1 rounded-full bg-gray-600"></div>
               <div className="w-1 h-1 rounded-full bg-gray-600"></div>
@@ -180,16 +180,16 @@ const ProjectTiltCard = ({ project, index }: { project: any, index: number, key?
           <h3 className="text-lg md:text-sm md:text-xl font-bold text-white mb-1 md:mb-4 group-hover:text-primary transition-colors leading-tight">
             {project.title}
           </h3>
-          <p className="text-gray-500 text-[9px] md:text-sm leading-snug md:leading-relaxed mb-0 md:mb-4 line-clamp-3 md:line-clamp-none flex-grow">
+          <p className="text-gray-500 text-[12px] md:text-sm leading-snug md:leading-relaxed mb-0 md:mb-4 line-clamp-3 md:line-clamp-none flex-grow">
             {project.desc}
           </p>
 
           {/* Mobile Action Buttons (Visible only on mobile) */}
           <div className="flex flex-col md:hidden gap-1.5 mt-3">
-            <button className="w-full py-1.5 bg-primary/10 text-primary rounded-md text-[9px] font-bold flex items-center justify-center gap-1.5">
+            <button className="w-full py-1.5 bg-primary/10 text-primary rounded-md text-[12px] font-bold flex items-center justify-center gap-1.5">
               <ExternalLink size={10} /> Demo
             </button>
-            <button className="w-full py-1.5 bg-white/5 text-white rounded-md text-[9px] font-bold flex items-center justify-center gap-1.5 border border-white/10">
+            <button className="w-full py-1.5 bg-white/5 text-white rounded-md text-[12px] font-bold flex items-center justify-center gap-1.5 border border-white/10">
               <Github size={10} /> Source
             </button>
           </div>
@@ -293,7 +293,7 @@ const CaseStudyCard = ({ study, index }: { study: any, index: number, key?: any 
 
         <div className="flex flex-wrap gap-3">
           {study.tags.map((tag: string) => (
-            <span key={tag} className="px-4 py-2 bg-card rounded-lg text-[10px] font-bold text-gray-400 uppercase tracking-wider neumorphic-inner border border-white/5 hover:border-primary/50 hover:text-white transition-colors cursor-default">
+            <span key={tag} className="px-4 py-2 bg-card rounded-lg text-[12px] font-bold text-gray-400 uppercase tracking-wider neumorphic-inner border border-white/5 hover:border-primary/50 hover:text-white transition-colors cursor-default">
               {tag}
             </span>
           ))}
@@ -387,7 +387,7 @@ const Service3DCard = ({ skill, index }: { skill: any, index: number, key?: any 
           <h3 className="text-lg md:text-sm md:text-2xl font-bold mb-2 md:mb-5 text-white group-hover:text-primary transition-colors leading-tight">
             {skill.title}
           </h3>
-          <p className="text-[10px] md:text-base text-gray-400 leading-snug md:leading-relaxed group-hover:text-gray-300 transition-colors">
+          <p className="text-[12px] md:text-base text-gray-400 leading-snug md:leading-relaxed group-hover:text-gray-300 transition-colors">
             {skill.desc}
           </p>
           <div className="mt-4 md:mt-8 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -443,8 +443,8 @@ const CertificationCard = ({ cert, index }: { cert: any, index: number, key?: an
 
         <div style={isMobile ? {} : { transform: "translateZ(40px)" }} className="relative z-10 transition-transform duration-300 flex flex-col h-full">
           <div className="flex justify-between items-start mb-4 md:mb-6">
-            <span className="text-primary text-[10px] md:text-xs font-bold uppercase tracking-widest">{cert.platform}</span>
-            <span className="text-gray-500 text-[10px] md:text-xs font-bold bg-background/50 px-2.5 py-1 rounded-md neumorphic-inner border border-white/5">{cert.date}</span>
+            <span className="text-primary text-[12px] md:text-xs font-bold uppercase tracking-widest">{cert.platform}</span>
+            <span className="text-gray-500 text-[12px] md:text-xs font-bold bg-background/50 px-2.5 py-1 rounded-md neumorphic-inner border border-white/5">{cert.date}</span>
           </div>
           <h3 className="text-lg md:text-2xl font-bold mb-3 text-white group-hover:text-primary transition-colors leading-tight">
             {cert.title}
@@ -453,7 +453,7 @@ const CertificationCard = ({ cert, index }: { cert: any, index: number, key?: an
             {cert.desc}
           </p>
           <div className="mt-auto">
-            <button className="inline-flex items-center gap-2 text-[10px] md:text-xs font-bold text-white group-hover:text-primary transition-colors uppercase tracking-widest">
+            <button className="inline-flex items-center gap-2 text-[12px] md:text-xs font-bold text-white group-hover:text-primary transition-colors uppercase tracking-widest">
               View Certificate <ExternalLink size={14} />
             </button>
           </div>
@@ -801,7 +801,7 @@ export default function PortfolioClient({
               transition={{ duration: 1, ease: "easeOut" }}
               className="z-10"
             >
-              <span className="inline-block text-gray-400 tracking-[0.1em] md:tracking-[0.2em] font-medium text-[10px] sm:text-xs md:text-sm mb-2 md:mb-6 uppercase">
+              <span className="inline-block text-gray-400 tracking-[0.1em] md:tracking-[0.2em] font-medium text-[12px] sm:text-xs md:text-sm mb-2 md:mb-6 uppercase">
                 Welcome to my world
               </span>
               <h1 className="text-4xl sm:text-5xl md:text-5xl lg:text-7xl font-extrabold leading-[1.1] mb-4 md:mb-8">
@@ -827,7 +827,7 @@ export default function PortfolioClient({
                       <img src="/frames/ezgif-frame-001.jpg" alt="Profile" className="w-full h-full object-cover" />
                     </div>
                     <div>
-                      <p className="text-[10px] md:text-sm text-gray-400">Available for</p>
+                      <p className="text-[12px] md:text-sm text-gray-400">Available for</p>
                       <p className="font-bold text-lg md:text-xs md:text-base">Freelance Work</p>
                     </div>
                   </div>
@@ -838,7 +838,7 @@ export default function PortfolioClient({
               <div className="hidden md:grid grid-cols-2 gap-4 xl:gap-20">
                 {/* Social Links */}
                 <div>
-                  <p className="text-[10px] md:text-xs uppercase tracking-widest text-gray-500 mb-3 md:mb-6 font-bold">Find with me</p>
+                  <p className="text-[12px] md:text-xs uppercase tracking-widest text-gray-500 mb-3 md:mb-6 font-bold">Find with me</p>
                   <div className="flex gap-2 md:gap-4 flex-wrap">
                     {socialLinks.map((social, i) => (
                       <motion.a
@@ -857,7 +857,7 @@ export default function PortfolioClient({
 
                 {/* Skills */}
                 <div>
-                  <p className="text-[10px] md:text-xs uppercase tracking-widest text-gray-500 mb-3 md:mb-6 font-bold">Best skill on</p>
+                  <p className="text-[12px] md:text-xs uppercase tracking-widest text-gray-500 mb-3 md:mb-6 font-bold">Best skill on</p>
                   <div className="flex gap-2 md:gap-4 flex-wrap">
                     {skills.map((skill, i) => (
                       <motion.div
@@ -881,7 +881,7 @@ export default function PortfolioClient({
               transition={{ duration: 1, ease: "easeOut" }}
               className="relative md:ml-auto"
             >
-              <div className="relative z-10 w-full max-w-[500px] aspect-square md:aspect-[4/5] p-2 md:p-4 bg-card rounded-xl md:rounded-2xl neumorphic border border-white/5">
+              <div className="relative z-10 w-full max-w-[500px] aspect-[4/5] p-2 md:p-4 bg-card rounded-xl md:rounded-2xl neumorphic border border-white/5 scale-110 origin-top-right md:scale-100 md:origin-center">
                 <div className="w-full h-full rounded-lg md:rounded-xl overflow-hidden relative group">
                   <div ref={box1Ref} className="w-full h-full opacity-0">
                     <img src="/frames/ezgif-frame-001.jpg" className="w-full h-full object-cover" alt="Profile placeholder" />
@@ -923,7 +923,7 @@ export default function PortfolioClient({
               <div className="grid grid-cols-2 gap-4 mt-4">
                 {/* Social Links */}
                 <div>
-                  <p className="text-[10px] md:text-xs uppercase tracking-widest text-gray-500 mb-3 md:mb-6 font-bold">Find with me</p>
+                  <p className="text-[12px] md:text-xs uppercase tracking-widest text-gray-500 mb-3 md:mb-6 font-bold">Find with me</p>
                   <div className="flex gap-2 md:gap-4 flex-wrap">
                     {socialLinks.map((social, i) => (
                       <motion.a
@@ -942,7 +942,7 @@ export default function PortfolioClient({
 
                 {/* Skills */}
                 <div>
-                  <p className="text-[10px] md:text-xs uppercase tracking-widest text-gray-500 mb-3 md:mb-6 font-bold">Best skill on</p>
+                  <p className="text-[12px] md:text-xs uppercase tracking-widest text-gray-500 mb-3 md:mb-6 font-bold">Best skill on</p>
                   <div className="flex gap-2 md:gap-4 flex-wrap">
                     {skills.map((skill, i) => (
                       <motion.div
@@ -971,7 +971,7 @@ export default function PortfolioClient({
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
+                viewport={{ once: true, margin: "0px 0px 300px 0px" }}
                 transition={{ duration: 0.8 }}
                 className="col-span-1 lg:col-span-5 relative"
               >
@@ -983,7 +983,7 @@ export default function PortfolioClient({
                   </div>
                   <div className="absolute -bottom-2 left-2 md:left-auto md:-bottom-8 md:-right-8 p-2 md:p-6 bg-card rounded-lg md:rounded-2xl neumorphic border border-white/5 text-center z-50">
                     <p className="text-lg md:text-xl font-extrabold text-primary leading-none mb-1">Power BI</p>
-                    <p className="text-[6px] md:text-[10px] uppercase tracking-widest text-gray-500 font-bold leading-tight">Certified</p>
+                    <p className="text-[6px] md:text-[12px] uppercase tracking-widest text-gray-500 font-bold leading-tight">Certified</p>
                   </div>
                 </div>
               </motion.div>
@@ -993,10 +993,10 @@ export default function PortfolioClient({
                 <motion.div
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
+                  viewport={{ once: true, margin: "0px 0px 300px 0px" }}
                   transition={{ duration: 0.8 }}
                 >
-                  <span className="text-primary uppercase tracking-[0.1em] md:tracking-[0.3em] text-[10px] md:text-sm font-bold block mb-2 md:mb-4">About Me</span>
+                  <span className="text-primary uppercase tracking-[0.1em] md:tracking-[0.3em] text-[12px] md:text-sm font-bold block mb-2 md:mb-4">About Me</span>
                   <h2 className="text-2xl sm:text-3xl md:text-5xl font-extrabold mb-4 md:mb-8 leading-tight">
                     Data Analysis & Visualization <br className="hidden md:block" />
                     <span className="text-gray-400">is what I do best.</span>
@@ -1034,15 +1034,15 @@ export default function PortfolioClient({
                     <div className="flex flex-wrap gap-12">
                       <div>
                         <h4 className="text-3xl font-bold text-white mb-1">{stats.projects}</h4>
-                        <p className="text-[10px] uppercase tracking-widest text-gray-500 font-bold">Projects Done</p>
+                        <p className="text-[12px] uppercase tracking-widest text-gray-500 font-bold">Projects Done</p>
                       </div>
                       <div>
                         <h4 className="text-3xl font-bold text-white mb-1">{stats.clients}</h4>
-                        <p className="text-[10px] uppercase tracking-widest text-gray-500 font-bold">Happy Clients</p>
+                        <p className="text-[12px] uppercase tracking-widest text-gray-500 font-bold">Happy Clients</p>
                       </div>
                       <div>
                         <h4 className="text-3xl font-bold text-white mb-1">{stats.success}</h4>
-                        <p className="text-[10px] uppercase tracking-widest text-gray-500 font-bold">Success Rate</p>
+                        <p className="text-[12px] uppercase tracking-widest text-gray-500 font-bold">Success Rate</p>
                       </div>
                     </div>
 
@@ -1078,20 +1078,20 @@ export default function PortfolioClient({
 
                   <div className="grid grid-cols-2 gap-3 md:gap-8 mb-8 md:mb-12">
                     <div className="p-3 md:p-6 bg-card rounded-xl md:rounded-2xl neumorphic-inner border border-white/5">
-                      <h3 className="text-white font-bold text-[10px] md:text-base mb-1 md:mb-3 flex items-center gap-1 md:gap-2">
+                      <h3 className="text-white font-bold text-[12px] md:text-base mb-1 md:mb-3 flex items-center gap-1 md:gap-2">
                         <div className="w-1.5 md:w-2 h-1.5 md:h-2 rounded-full bg-primary flex-shrink-0"></div>
                         Exploratory Analysis
                       </h3>
-                      <p className="text-gray-500 text-[8px] md:text-sm leading-relaxed">
+                      <p className="text-gray-500 text-[10px] md:text-sm leading-relaxed">
                         Deep diving into datasets to discover patterns, anomalies, and relationships using SQL, Excel, and Power BI.
                       </p>
                     </div>
                     <div className="p-3 md:p-6 bg-card rounded-xl md:rounded-2xl neumorphic-inner border border-white/5">
-                      <h3 className="text-white font-bold text-[10px] md:text-base mb-1 md:mb-3 flex items-center gap-1 md:gap-2">
+                      <h3 className="text-white font-bold text-[12px] md:text-base mb-1 md:mb-3 flex items-center gap-1 md:gap-2">
                         <div className="w-1.5 md:w-2 h-1.5 md:h-2 rounded-full bg-blue-500 flex-shrink-0"></div>
                         Business Intelligence
                       </h3>
-                      <p className="text-gray-500 text-[8px] md:text-sm leading-relaxed">
+                      <p className="text-gray-500 text-[10px] md:text-sm leading-relaxed">
                         Building interactive dashboards and automated reporting systems using Tableau, Power BI, and SQL.
                       </p>
                     </div>
@@ -1100,15 +1100,15 @@ export default function PortfolioClient({
                   <div className="flex flex-row justify-between lg:justify-start gap-4 lg:gap-12 flex-wrap">
                     <div className="text-center lg:text-left flex-1 lg:flex-none">
                       <h4 className="text-2xl md:text-3xl font-bold text-white mb-1">{stats.projects}</h4>
-                      <p className="text-[8px] md:text-[10px] uppercase tracking-widest text-gray-500 font-bold">Projects<br className="block md:hidden" /> Done</p>
+                      <p className="text-[10px] md:text-[12px] uppercase tracking-widest text-gray-500 font-bold">Projects<br className="block md:hidden" /> Done</p>
                     </div>
                     <div className="text-center lg:text-left flex-1 lg:flex-none">
                       <h4 className="text-2xl md:text-3xl font-bold text-white mb-1">{stats.clients}</h4>
-                      <p className="text-[8px] md:text-[10px] uppercase tracking-widest text-gray-500 font-bold">Happy<br className="block md:hidden" /> Clients</p>
+                      <p className="text-[10px] md:text-[12px] uppercase tracking-widest text-gray-500 font-bold">Happy<br className="block md:hidden" /> Clients</p>
                     </div>
                     <div className="text-center lg:text-left flex-1 lg:flex-none">
                       <h4 className="text-2xl md:text-3xl font-bold text-white mb-1">{stats.success}</h4>
-                      <p className="text-[8px] md:text-[10px] uppercase tracking-widest text-gray-500 font-bold">Success<br className="block md:hidden" /> Rate</p>
+                      <p className="text-[10px] md:text-[12px] uppercase tracking-widest text-gray-500 font-bold">Success<br className="block md:hidden" /> Rate</p>
                     </div>
                   </div>
 
@@ -1188,9 +1188,9 @@ export default function PortfolioClient({
                     <div className="flex justify-between mb-2 md:mb-3 px-1 items-center">
                       <div className="flex items-center gap-2">
                         {skill.icon}
-                        <span className="text-[10px] md:text-sm font-bold uppercase tracking-wider text-gray-400">{skill.name}</span>
+                        <span className="text-[12px] md:text-sm font-bold uppercase tracking-wider text-gray-400">{skill.name}</span>
                       </div>
-                      <span className="text-primary font-bold text-[10px] md:text-sm tracking-widest">{skill.level}</span>
+                      <span className="text-primary font-bold text-[12px] md:text-sm tracking-widest">{skill.level}</span>
                     </div>
                     <div className="h-3 w-full bg-background rounded-full neumorphic-inner p-1">
                       <motion.div
@@ -1229,7 +1229,7 @@ export default function PortfolioClient({
                     <motion.span
                       key={index}
                       whileHover={{ scale: 1.05, y: -2 }}
-                      className="px-3 md:px-6 py-2 md:py-4 bg-background rounded-lg md:rounded-xl text-[10px] md:text-sm font-bold text-gray-400 border border-white/5 neumorphic-inner cursor-default hover:text-primary transition-colors"
+                      className="px-3 md:px-6 py-2 md:py-4 bg-background rounded-lg md:rounded-xl text-[12px] md:text-sm font-bold text-gray-400 border border-white/5 neumorphic-inner cursor-default hover:text-primary transition-colors"
                     >
                       {tool}
                     </motion.span>
@@ -1258,7 +1258,7 @@ export default function PortfolioClient({
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-primary uppercase tracking-[0.3em] text-[10px] md:text-sm font-bold block mb-2 md:mb-4"
+              className="text-primary uppercase tracking-[0.3em] text-[12px] md:text-sm font-bold block mb-2 md:mb-4"
             >
               Professional History
             </motion.span>
@@ -1304,7 +1304,7 @@ export default function PortfolioClient({
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-primary uppercase tracking-[0.2em] md:tracking-[0.3em] text-[10px] md:text-sm font-bold block mb-3 md:mb-4"
+              className="text-primary uppercase tracking-[0.2em] md:tracking-[0.3em] text-[12px] md:text-sm font-bold block mb-3 md:mb-4"
             >
               Visit my projects and keep your feedback
             </motion.span>
@@ -1416,7 +1416,7 @@ export default function PortfolioClient({
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-primary uppercase tracking-[0.2em] md:tracking-[0.3em] text-[10px] md:text-sm font-bold block mb-3 md:mb-4"
+              className="text-primary uppercase tracking-[0.2em] md:tracking-[0.3em] text-[12px] md:text-sm font-bold block mb-3 md:mb-4"
             >
               Continuous Learning & Growth
             </motion.span>
@@ -1624,7 +1624,7 @@ export default function PortfolioClient({
               <input type="text" name="website_url" className="hidden" tabIndex={-1} autoComplete="off" />
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div className="flex flex-col gap-2">
-                  <label className="text-[10px] uppercase font-bold text-gray-500 tracking-[0.2em] ml-1">Your Name <span className="text-primary">*</span></label>
+                  <label className="text-[12px] uppercase font-bold text-gray-500 tracking-[0.2em] ml-1">Your Name <span className="text-primary">*</span></label>
                   <ParticleWrapper>
                     <input
                       type="text"
@@ -1636,7 +1636,7 @@ export default function PortfolioClient({
                   </ParticleWrapper>
                 </div>
                 <div className="flex flex-col gap-2">
-                  <label className="text-[10px] uppercase font-bold text-gray-500 tracking-[0.2em] ml-1">Phone Number</label>
+                  <label className="text-[12px] uppercase font-bold text-gray-500 tracking-[0.2em] ml-1">Phone Number</label>
                   <ParticleWrapper>
                     <input
                       type="text"
@@ -1647,7 +1647,7 @@ export default function PortfolioClient({
                   </ParticleWrapper>
                 </div>
                 <div className="flex flex-col gap-2">
-                  <label className="text-[10px] uppercase font-bold text-gray-500 tracking-[0.2em] ml-1">Email <span className="text-primary">*</span></label>
+                  <label className="text-[12px] uppercase font-bold text-gray-500 tracking-[0.2em] ml-1">Email <span className="text-primary">*</span></label>
                   <ParticleWrapper>
                     <input
                       type="email"
@@ -1659,7 +1659,7 @@ export default function PortfolioClient({
                   </ParticleWrapper>
                 </div>
                 <div className="flex flex-col gap-2">
-                  <label className="text-[10px] uppercase font-bold text-gray-500 tracking-[0.2em] ml-1">Subject <span className="text-primary">*</span></label>
+                  <label className="text-[12px] uppercase font-bold text-gray-500 tracking-[0.2em] ml-1">Subject <span className="text-primary">*</span></label>
                   <ParticleWrapper>
                     <input
                       type="text"
@@ -1673,7 +1673,7 @@ export default function PortfolioClient({
               </div>
 
               <div className="flex flex-col gap-2">
-                <label className="text-[10px] uppercase font-bold text-gray-500 tracking-[0.2em] ml-1">Message</label>
+                <label className="text-[12px] uppercase font-bold text-gray-500 tracking-[0.2em] ml-1">Message</label>
                 <ParticleWrapper>
                   <textarea
                     rows={4}
@@ -1707,7 +1707,7 @@ export default function PortfolioClient({
                   <Phone size={20} />
                 </div>
                 <div>
-                  <p className="text-[10px] uppercase font-bold text-gray-500 tracking-widest">Call Me</p>
+                  <p className="text-[12px] uppercase font-bold text-gray-500 tracking-widest">Call Me</p>
                   <p className="text-lg md:text-sm text-gray-200 font-bold">+91 7718938615</p>
                 </div>
               </div>
@@ -1716,7 +1716,7 @@ export default function PortfolioClient({
                   <Mail size={20} />
                 </div>
                 <div>
-                  <p className="text-[10px] uppercase font-bold text-gray-500 tracking-widest">Email Me</p>
+                  <p className="text-[12px] uppercase font-bold text-gray-500 tracking-widest">Email Me</p>
                   <p className="text-lg md:text-sm text-gray-200 font-bold break-all">sohel82.shaikh@gmail.com</p>
                 </div>
               </div>
@@ -1819,7 +1819,7 @@ export default function PortfolioClient({
                     <Phone size={20} />
                   </div>
                   <div>
-                    <p className="text-[10px] uppercase font-bold text-gray-500 tracking-widest">Phone</p>
+                    <p className="text-[12px] uppercase font-bold text-gray-500 tracking-widest">Phone</p>
                     <p className="text-gray-200 font-bold text-lg md:text-sm tracking-wide">+91 7718938615</p>
                   </div>
                 </div>
@@ -1828,7 +1828,7 @@ export default function PortfolioClient({
                     <Mail size={20} />
                   </div>
                   <div>
-                    <p className="text-[10px] uppercase font-bold text-gray-500 tracking-widest">Email</p>
+                    <p className="text-[12px] uppercase font-bold text-gray-500 tracking-widest">Email</p>
                     <p className="text-gray-200 font-bold text-lg md:text-sm break-all">sohel82.shaikh@gmail.com</p>
                   </div>
                 </div>

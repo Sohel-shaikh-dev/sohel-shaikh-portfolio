@@ -920,7 +920,7 @@ export default function PortfolioClient({
               </div>
 
               {/* Mobile Only Social & Skills (to fill empty space below image) */}
-              <div className="flex flex-col gap-6 mt-2">
+              <div className="grid grid-cols-2 gap-4 mt-4">
                 {/* Social Links */}
                 <div>
                   <p className="text-[10px] md:text-xs uppercase tracking-widest text-gray-500 mb-3 md:mb-6 font-bold">Find with me</p>

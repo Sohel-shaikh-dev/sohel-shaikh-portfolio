@@ -40,7 +40,7 @@ export const ParticleWrapper = ({ children, className = '' }: { children: React.
 
   return (
     <div className={`relative w-full ${className}`} ref={containerRef}>
-      {React.cloneElement(children, {
+      {React.cloneElement(children as React.ReactElement<any>, {
         onKeyDown: handleInput,
         onChange: handleInput,
       })}

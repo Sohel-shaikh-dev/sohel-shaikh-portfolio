@@ -58,7 +58,7 @@ export function JourneyAnimation({ progress, wrapperRef, box1Ref, box2Ref }: Jou
   }, [wrapperRef, box1Ref, box2Ref]);
 
   // Interpolate coordinates. On mobile, the scroll journey is much longer due to stacked sections.
-  const endThreshold = coords.isMobile ? 0.9 : 0.7;
+  const endThreshold = coords.isMobile ? 0.4 : 0.5;
   const x = useTransform(progress, [0, endThreshold], [coords.start.x, coords.end.x]);
   const y = useTransform(progress, [0, endThreshold], [coords.start.y, coords.end.y]);
   const width = useTransform(progress, [0, endThreshold], [coords.start.w, coords.end.w]);

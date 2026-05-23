@@ -881,7 +881,7 @@ export default function PortfolioClient({
               transition={{ duration: 1, ease: "easeOut" }}
               className="relative md:ml-auto"
             >
-              <div className="relative z-10 w-full max-w-[500px] aspect-[4/5] p-2 md:p-4 bg-card rounded-xl md:rounded-2xl neumorphic border border-white/5">
+              <div className="relative z-10 w-full max-w-[500px] aspect-square md:aspect-[4/5] p-2 md:p-4 bg-card rounded-xl md:rounded-2xl neumorphic border border-white/5">
                 <div className="w-full h-full rounded-lg md:rounded-xl overflow-hidden relative group">
                   <div ref={box1Ref} className="w-full h-full opacity-0">
                     <img src="/frames/ezgif-frame-001.jpg" className="w-full h-full object-cover" alt="Profile placeholder" />
@@ -900,7 +900,7 @@ export default function PortfolioClient({
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
-              className="col-span-2 flex flex-col md:hidden mt-8 w-full"
+              className="col-span-2 flex flex-col md:hidden mt-2 w-full"
             >
               <p className="text-gray-400 text-lg leading-relaxed mb-6">
                 Detail-oriented and analytical Data Analyst with strong skills in Power BI, SQL, DAX, and Excel.

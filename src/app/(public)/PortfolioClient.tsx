@@ -792,7 +792,7 @@ export default function PortfolioClient({
       <div ref={heroAboutRef} className="relative">
         {/* Hero Section */}
         <main id="home" className="pt-24 md:pt-32 pb-12 md:pb-20 px-4 md:px-6">
-          <div className="max-w-7xl mx-auto grid grid-cols-2 gap-4 md:gap-12 items-start md:items-center">
+          <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-start md:items-center">
 
             {/* Content */}
             <motion.div
@@ -801,15 +801,15 @@ export default function PortfolioClient({
               transition={{ duration: 1, ease: "easeOut" }}
               className="z-10"
             >
-              <span className="inline-block text-gray-400 tracking-[0.1em] md:tracking-[0.2em] font-medium text-[8px] sm:text-[10px] md:text-sm mb-2 md:mb-6 uppercase">
+              <span className="inline-block text-gray-400 tracking-[0.1em] md:tracking-[0.2em] font-medium text-[10px] sm:text-xs md:text-sm mb-2 md:mb-6 uppercase">
                 Welcome to my world
               </span>
-              <h1 className="text-xl sm:text-2xl md:text-5xl lg:text-7xl font-extrabold leading-[1.1] mb-4 md:mb-8">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-extrabold leading-[1.1] mb-4 md:mb-8">
                 Hi, I'm <br className="block md:hidden" /><span className="text-primary tracking-tight">Sohel Shaikh</span>
                 <br />
-                <span className="text-gray-100 text-sm sm:text-base md:text-3xl lg:text-4xl block mt-1 md:mt-2">a Professional Data Analyst.</span>
+                <span className="text-gray-100 text-lg sm:text-xl md:text-3xl lg:text-4xl block mt-1 md:mt-2">a Professional Data Analyst.</span>
               </h1>
-              <p className="text-gray-400 text-[10px] sm:text-xs md:text-lg leading-relaxed max-w-xl mb-6 md:mb-12">
+              <p className="text-gray-400 text-sm md:text-lg leading-relaxed max-w-xl mb-6 md:mb-12">
                 Detail-oriented and analytical Data Analyst with strong skills in Power BI, SQL, DAX, and Excel.
                 Experienced in building interactive dashboards and transforming raw data into meaningful business insights.
               </p>

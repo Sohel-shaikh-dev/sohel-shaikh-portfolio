@@ -809,28 +809,30 @@ export default function PortfolioClient({
                 <br />
                 <span className="text-gray-100 text-2xl sm:text-3xl md:text-3xl lg:text-4xl block mt-1 md:mt-2">a Professional Data Analyst.</span>
               </h1>
-              <p className="text-gray-400 text-lg md:text-sm md:text-lg leading-relaxed max-w-xl mb-6 md:mb-12">
-                Detail-oriented and analytical Data Analyst with strong skills in Power BI, SQL, DAX, and Excel.
-                Experienced in building interactive dashboards and transforming raw data into meaningful business insights.
-              </p>
+              <div className="hidden md:block">
+                <p className="text-gray-400 text-lg md:text-sm md:text-lg leading-relaxed max-w-xl mb-6 md:mb-12">
+                  Detail-oriented and analytical Data Analyst with strong skills in Power BI, SQL, DAX, and Excel.
+                  Experienced in building interactive dashboards and transforming raw data into meaningful business insights.
+                </p>
 
-              <motion.div
-                initial={{ opacity: 0, x: -50 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
-                className="flex items-center gap-3 md:gap-4 mb-8 md:mb-12"
-              >
-                <div className="flex items-center">
-                  {/* Profile Image / 3D Canvas */}
-                  <div className="w-10 h-10 md:w-20 md:h-20 rounded-full overflow-hidden border-2 border-primary/20 mr-2 md:mr-4">
-                    <img src="/frames/ezgif-frame-001.jpg" alt="Profile" className="w-full h-full object-cover" />
+                <motion.div
+                  initial={{ opacity: 0, x: -50 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.8, ease: "easeOut" }}
+                  className="flex items-center gap-3 md:gap-4 mb-8 md:mb-12"
+                >
+                  <div className="flex items-center">
+                    {/* Profile Image / 3D Canvas */}
+                    <div className="w-10 h-10 md:w-20 md:h-20 rounded-full overflow-hidden border-2 border-primary/20 mr-2 md:mr-4">
+                      <img src="/frames/ezgif-frame-001.jpg" alt="Profile" className="w-full h-full object-cover" />
+                    </div>
+                    <div>
+                      <p className="text-[10px] md:text-sm text-gray-400">Available for</p>
+                      <p className="font-bold text-lg md:text-xs md:text-base">Freelance Work</p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="text-[10px] md:text-sm text-gray-400">Available for</p>
-                    <p className="font-bold text-lg md:text-xs md:text-base">Freelance Work</p>
-                  </div>
-                </div>
-              </motion.div>
+                </motion.div>
+              </div>
 
               {/* Desktop Only Social & Skills */}
               <div className="hidden md:grid grid-cols-2 gap-4 xl:gap-20">
@@ -891,8 +893,34 @@ export default function PortfolioClient({
               {/* Outline Card behind */}
               <div className="absolute -inset-4 border-2 border-white/5 rounded-[2rem] -z-20 scale-95 opacity-50"></div>
 
+            </motion.div>
+
+            {/* MOBILE ONLY: Full Width Content Below Title & Image */}
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
+              className="col-span-2 flex flex-col md:hidden mt-8 w-full"
+            >
+              <p className="text-gray-400 text-lg leading-relaxed mb-6">
+                Detail-oriented and analytical Data Analyst with strong skills in Power BI, SQL, DAX, and Excel.
+                Experienced in building interactive dashboards and transforming raw data into meaningful business insights.
+              </p>
+
+              <div className="flex items-center gap-3 mb-8">
+                <div className="flex items-center">
+                  <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-primary/20 mr-2">
+                    <img src="/frames/ezgif-frame-001.jpg" alt="Profile" className="w-full h-full object-cover" />
+                  </div>
+                  <div>
+                    <p className="text-lg text-gray-400">Available for</p>
+                    <p className="font-bold text-lg text-white">Freelance Work</p>
+                  </div>
+                </div>
+              </div>
+
               {/* Mobile Only Social & Skills (to fill empty space below image) */}
-              <div className="flex md:hidden flex-col gap-6 mt-6">
+              <div className="flex flex-col gap-6 mt-2">
                 {/* Social Links */}
                 <div>
                   <p className="text-[10px] md:text-xs uppercase tracking-widest text-gray-500 mb-3 md:mb-6 font-bold">Find with me</p>
@@ -929,7 +957,6 @@ export default function PortfolioClient({
                   </div>
                 </div>
               </div>
-
             </motion.div>
 
           </div>

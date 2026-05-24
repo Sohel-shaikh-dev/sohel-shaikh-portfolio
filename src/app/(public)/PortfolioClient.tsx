@@ -1914,7 +1914,7 @@ export default function PortfolioClient({
       </section>
 
       {/* Footer */}
-      <footer className="relative pt-32 pb-12 px-6 bg-background border-t border-white/5 overflow-hidden">
+      <footer className="relative pt-32 pb-28 md:pb-12 px-6 bg-background border-t border-white/5 overflow-hidden">
         {/* Background glow */}
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/5 blur-[150px] -z-10 rounded-full translate-x-1/2 -translate-y-1/2"></div>
 

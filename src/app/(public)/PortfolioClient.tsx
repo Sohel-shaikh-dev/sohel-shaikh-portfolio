@@ -1535,7 +1535,7 @@ export default function PortfolioClient({
                 <div className="flex flex-wrap gap-2 md:gap-4">
                   {[
                     "Power BI", "Tableau", "Power Query", "DAX", "SQL Server",
-                    "Excel (Advanced)", "SSIS", "Google Analytics",
+                    "Excel (Advanced)",
                     "MS Word", "PowerPoint", "Data Modeling", "VS Code"
                   ].map((tool, index) => (
                     <motion.span

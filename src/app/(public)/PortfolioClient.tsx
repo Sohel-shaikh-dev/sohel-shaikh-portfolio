@@ -16,6 +16,10 @@ import {
   Table,
   Menu,
   X,
+  Home,
+  Briefcase,
+  FileText,
+  BookOpen,
   ExternalLink,
   Github,
   Phone,
@@ -41,7 +45,7 @@ import {
   Settings,
   Sparkles
 } from 'lucide-react';
-import React, { useState, useRef, useTransition } from 'react';
+import React, { useState, useRef, useTransition, useEffect } from 'react';
 import { ScrollyCanvas } from '../../components/ScrollyCanvas';
 import { JourneyAnimation } from '../../components/JourneyAnimation';
 import { FirefliesBackground } from '../../components/FirefliesBackground';
@@ -827,6 +831,42 @@ export default function PortfolioClient({
   const [activeModal, setActiveModal] = useState<'privacy' | 'terms' | null>(null);
   const [showAllProjects, setShowAllProjects] = useState(false);
   const [isDeveloperModalOpen, setIsDeveloperModalOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState('home');
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = ['home', 'about', 'skills', 'experience', 'projects', 'certifications', 'casestudy', 'service', 'contact'];
+      let currentSection = 'home';
+      
+      for (const section of sections) {
+        const element = document.getElementById(section);
+        if (element) {
+          const rect = element.getBoundingClientRect();
+          if (rect.top <= 120) {
+            currentSection = section;
+          }
+        }
+      }
+      setActiveSection(currentSection);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isMenuOpen]);
+
   const [isPending, startTransition] = useTransition();
   const [alertInfo, setAlertInfo] = useState<{isOpen: boolean, title: string, message: string, type: 'success'|'error'}>({
     isOpen: false, title: '', message: '', type: 'success'
@@ -894,88 +934,155 @@ export default function PortfolioClient({
     <div className="min-h-screen bg-background selection:bg-primary/30">
       {/* Navbar */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-white/5">
-        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-          <div className="flex items-center gap-2">
+        <div className="max-w-[1440px] mx-auto px-4 md:px-6 h-20 flex items-center justify-between">
+          <div className="flex items-center gap-2 shrink-0">
             <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-xl">S</span>
             </div>
-            <span className="text-2xl font-bold tracking-tighter">Sohel<span className="text-primary">.dev</span></span>
+            <span className="text-2xl font-bold tracking-tighter text-white">Sohel<span className="text-primary">.dev</span></span>
           </div>
 
           {/* Desktop Nav */}
-          <div className="hidden md:flex items-center gap-8">
-            {navLinks.map((link) => (
+          <div className="hidden lg:flex items-center justify-end gap-1 xl:gap-2 flex-grow pl-4 overflow-hidden">
+            {navLinks.map((link) => {
+              const isActive = activeSection === link.href.substring(1);
+              return (
               <a
                 key={link.name}
                 href={link.href}
-                className="text-lg md:text-sm font-medium text-gray-400 hover:text-white transition-colors"
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.querySelector(link.href)?.scrollIntoView({ behavior: 'smooth' });
+                  setIsMenuOpen(false);
+                }}
+                className={`px-3 py-2 text-[11px] xl:text-[12px] font-bold uppercase tracking-wider transition-all duration-300 relative ${
+                  isActive ? 'text-primary' : 'text-gray-400 hover:text-white hover:bg-white/5 rounded-full'
+                }`}
               >
                 {link.name}
+                {isActive && (
+                  <motion.div
+                    layoutId="nav-indicator"
+                    className="absolute -bottom-[26px] left-0 right-0 h-[3px] bg-primary rounded-t-full shadow-[0_0_10px_rgba(255,1,79,0.5)]"
+                    initial={false}
+                    transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                  />
+                )}
               </a>
-            ))}
-            <button
-              onClick={() => setIsDeveloperModalOpen(true)}
-              className="px-4 py-2.5 bg-yellow-500/10 border border-yellow-500/20 text-yellow-500 rounded-full font-semibold text-lg md:text-sm hover:scale-105 hover:bg-yellow-500/20 transition-all flex items-center gap-2"
-            >
-              <User size={16} />
-              About Developer
-            </button>
-            <a
-              href="#contact"
-              className="px-6 py-2.5 bg-primary text-white rounded-full font-semibold text-lg md:text-sm hover:scale-105 transition-transform shadow-[0_0_20px_rgba(255,1,79,0.3)]"
-            >
-              Hire Me
-            </a>
-          </div>
-
-          {/* Mobile Toggle */}
-          <button
-            className="md:hidden text-white"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-          >
-            {isMenuOpen ? <X /> : <Menu />}
-          </button>
-        </div>
-
-        {/* Mobile Menu */}
-        {isMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="md:hidden bg-background border-b border-white/5 px-6 py-8"
-          >
-            <div className="flex flex-col gap-6">
-              {navLinks.map((link) => (
-                <a
-                  key={link.name}
-                  href={link.href}
-                  className="text-lg font-medium text-gray-400"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {link.name}
-                </a>
-              ))}
+            )})}
+            
+            <div className="flex items-center gap-2 xl:gap-3 ml-2 xl:ml-4 pl-2 xl:pl-4 border-l border-white/10">
               <button
-                onClick={() => {
-                  setIsMenuOpen(false);
-                  setIsDeveloperModalOpen(true);
-                }}
-                className="w-full py-4 bg-yellow-500/10 border border-yellow-500/20 text-yellow-500 rounded-xl font-bold text-center flex items-center justify-center gap-2"
+                onClick={() => setIsDeveloperModalOpen(true)}
+                className="px-3 xl:px-4 py-2 bg-yellow-500/10 border border-yellow-500/20 text-yellow-500 rounded-full font-semibold text-[11px] xl:text-[13px] hover:scale-105 hover:bg-yellow-500/20 transition-all flex items-center gap-1.5 whitespace-nowrap"
               >
-                <User size={18} />
+                <User size={14} />
                 About Developer
               </button>
               <a
                 href="#contact"
-                className="w-full py-4 bg-primary text-white rounded-xl font-bold text-center"
-                onClick={() => setIsMenuOpen(false)}
+                className="px-4 xl:px-6 py-2 bg-primary text-white rounded-full font-semibold text-[11px] xl:text-[13px] hover:scale-105 transition-transform shadow-[0_0_20px_rgba(255,1,79,0.3)] whitespace-nowrap"
               >
                 Hire Me
               </a>
             </div>
+          </div>
+
+          {/* Mobile Toggle */}
+          <button
+            className="lg:hidden text-white p-2"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
+          </button>
+        </div>
+      </nav>
+
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {isMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
+            className="lg:hidden fixed top-[80px] bottom-0 left-0 right-0 w-full bg-[#0A0A0A] border-t border-white/10 px-6 py-6 overflow-y-auto shadow-2xl z-[45] pb-32"
+          >
+            <div className="flex flex-col gap-2 mt-2">
+              {navLinks.map((link) => {
+                const isActive = activeSection === link.href.substring(1);
+                
+                let Icon = Star;
+                switch (link.name) {
+                  case 'Home': Icon = Home; break;
+                  case 'About': Icon = User; break;
+                  case 'Skills': Icon = Zap; break;
+                  case 'Experience': Icon = Briefcase; break;
+                  case 'Projects': Icon = Layout; break;
+                  case 'Certifications': Icon = Trophy; break;
+                  case 'Case Study': Icon = FileText; break;
+                  case 'Service': Icon = Settings; break;
+                  case 'Contact': Icon = Mail; break;
+                }
+
+                return (
+                <a
+                  key={link.name}
+                  href={link.href}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    document.querySelector(link.href)?.scrollIntoView({ behavior: 'smooth' });
+                    setIsMenuOpen(false);
+                  }}
+                  className={`group flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all duration-300 ${
+                    isActive 
+                      ? 'bg-gradient-to-r from-primary/10 to-transparent border-l-4 border-primary text-white' 
+                      : 'border-l-4 border-transparent text-gray-400 hover:text-white hover:bg-white/5'
+                  }`}
+                >
+                  <div className={`p-2 rounded-xl transition-colors ${isActive ? 'bg-primary/20 text-primary shadow-[0_0_15px_rgba(255,1,79,0.3)]' : 'bg-white/5 text-gray-400 group-hover:text-white group-hover:bg-white/10'}`}>
+                    <Icon size={20} />
+                  </div>
+                  <span className={`text-[15px] font-semibold tracking-wide ${isActive ? 'text-white' : ''}`}>
+                    {link.name}
+                  </span>
+                  {isActive && (
+                    <motion.div 
+                      layoutId="sidebar-active"
+                      className="ml-auto w-1.5 h-1.5 rounded-full bg-primary shadow-[0_0_8px_rgba(255,1,79,0.8)]"
+                    />
+                  )}
+                </a>
+              )})}
+              <div className="h-px w-full bg-gradient-to-r from-transparent via-white/10 to-transparent my-6"></div>
+              
+              <div className="flex flex-col gap-4">
+                <button
+                  onClick={() => {
+                    setIsDeveloperModalOpen(true);
+                    setIsMenuOpen(false);
+                  }}
+                  className="group relative w-full py-4 bg-gradient-to-r from-yellow-500/10 to-amber-500/10 border border-yellow-500/30 hover:border-yellow-500/60 rounded-2xl font-bold text-[15px] text-yellow-500 transition-all overflow-hidden shadow-[0_0_15px_rgba(234,179,8,0.1)] hover:shadow-[0_0_25px_rgba(234,179,8,0.2)]"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-r from-yellow-500/0 via-yellow-500/10 to-yellow-500/0 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+                  <div className="flex items-center justify-center gap-2.5">
+                    <User size={18} className="text-yellow-500" />
+                    <span>About Developer</span>
+                  </div>
+                </button>
+                <a
+                  href="#contact"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="relative w-full py-4 bg-gradient-to-r from-primary to-rose-600 rounded-2xl font-bold text-[15px] text-white shadow-[0_0_20px_rgba(255,1,79,0.4)] hover:shadow-[0_0_30px_rgba(255,1,79,0.6)] hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2.5"
+                >
+                  <Send size={18} />
+                  <span>Hire Me</span>
+                </a>
+              </div>
+            </div>
           </motion.div>
         )}
-      </nav>
+      </AnimatePresence>
 
       <div ref={heroAboutRef} className="relative">
         {/* Hero Section */}

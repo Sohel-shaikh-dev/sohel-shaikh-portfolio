@@ -2032,12 +2032,12 @@ export default function PortfolioClient({
               <a href="#terms" onClick={(e) => { e.preventDefault(); setActiveModal('terms'); }} className="hover:text-white transition-colors">Terms of Service</a>
             </div>
 
-            <div className="flex items-center text-sm font-medium tracking-wide bg-[#111111]/80 px-6 py-3 rounded-full border border-white/5 shadow-[0_0_20px_rgba(0,0,0,0.5)] backdrop-blur-sm gap-4">
-              <span className="text-gray-300 flex items-center gap-1.5 text-[13px]">
-                Crafted by <span className="text-blue-300 font-semibold tracking-wide">AI MetaWorld</span> <Sparkles size={14} className="text-yellow-400 fill-yellow-400" />
+            <div className="flex items-center justify-center font-medium tracking-wide bg-[#111111]/80 px-4 sm:px-6 py-2.5 sm:py-3 rounded-full border border-white/5 shadow-[0_0_20px_rgba(0,0,0,0.5)] backdrop-blur-sm gap-3 sm:gap-4 max-w-full">
+              <span className="text-gray-300 flex items-center gap-1.5 text-[10px] sm:text-[13px] whitespace-nowrap">
+                Crafted by <span className="text-blue-300 font-semibold tracking-wide">AI MetaWorld</span> <Sparkles className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-yellow-400 fill-yellow-400" />
               </span>
-              <div className="w-px h-4 bg-white/10"></div>
-              <a href="#developer" onClick={(e) => { e.preventDefault(); setIsDeveloperModalOpen(true); }} className="text-[#E8B744] font-bold hover:text-yellow-300 transition-colors uppercase tracking-widest text-[11px]">
+              <div className="w-px h-3 sm:h-4 bg-white/20 shrink-0"></div>
+              <a href="#developer" onClick={(e) => { e.preventDefault(); setIsDeveloperModalOpen(true); }} className="text-[#E8B744] font-bold hover:text-yellow-300 transition-colors uppercase tracking-widest text-[9px] sm:text-[11px] whitespace-nowrap shrink-0">
                 ABOUT DEVELOPER
               </a>
             </div>

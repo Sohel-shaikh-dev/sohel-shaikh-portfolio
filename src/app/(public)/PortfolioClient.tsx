@@ -46,11 +46,20 @@ import {
   Sparkles
 } from 'lucide-react';
 import React, { useState, useRef, useTransition, useEffect } from 'react';
-import { ScrollyCanvas } from '../../components/ScrollyCanvas';
-import { JourneyAnimation } from '../../components/JourneyAnimation';
-import { FirefliesBackground } from '../../components/FirefliesBackground';
+import dynamic from 'next/dynamic';
+import Image from 'next/image';
 import { submitContactForm } from './actions';
 import { AlertModal } from '../../components/admin/AlertModal';
+
+const ScrollyCanvas = dynamic(() => import('../../components/ScrollyCanvas').then(mod => mod.ScrollyCanvas), { 
+  ssr: false,
+  loading: () => <div className="w-full min-h-[300px] animate-pulse bg-white/5 rounded-2xl flex items-center justify-center text-gray-500">Loading interactive view...</div>
+});
+const JourneyAnimation = dynamic(() => import('../../components/JourneyAnimation').then(mod => mod.JourneyAnimation), { 
+  ssr: false,
+  loading: () => <div className="w-full min-h-[500px] animate-pulse bg-white/5 rounded-2xl flex items-center justify-center text-gray-500">Loading journey...</div>
+});
+const FirefliesBackground = dynamic(() => import('../../components/FirefliesBackground').then(mod => mod.FirefliesBackground), { ssr: false });
 
 const ExperienceCard = ({ exp, index, isLast }: { exp: any, index: number, isLast: boolean, key?: any }) => {
   const cardRef = useRef<HTMLDivElement>(null);
@@ -172,11 +181,12 @@ const ProjectTiltCard = ({ project, index }: { project: any, index: number, key?
       {/* Pop-out content wrapper */}
       <div style={isMobile ? {} : { transform: "translateZ(40px)" }} className="relative z-20 h-full flex flex-col">
         <div className="relative overflow-hidden rounded-lg md:rounded-2xl aspect-video mb-3 md:mb-8 shrink-0">
-          <img
+          <Image
             src={project.image}
             alt={project.title}
-            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0"
-            referrerPolicy="no-referrer"
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            className="object-cover transition-transform duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0"
           />
           {/* Desktop Hover Overlay */}
           <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity hidden md:flex items-center justify-center gap-4">
@@ -269,11 +279,12 @@ const CaseStudyCard = ({ study, index }: { study: any, index: number, key?: any 
           className="relative rounded-3xl aspect-[4/3] neumorphic-inner p-2 cursor-crosshair shadow-2xl"
         >
           <div style={isMobile ? {} : { transform: "translateZ(30px)" }} className="w-full h-full relative z-10 overflow-hidden rounded-2xl">
-            <img
+            <Image
               src={study.image}
               alt={study.title}
-              className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 scale-105 group-hover:scale-100"
-              referrerPolicy="no-referrer"
+              fill
+              sizes="(max-width: 768px) 100vw, 50vw"
+              className="object-cover grayscale group-hover:grayscale-0 transition-all duration-700 scale-105 group-hover:scale-100"
             />
           </div>
           {/* Subtle floating elements behind image */}
@@ -635,7 +646,9 @@ const AboutDeveloperModal = ({ isOpen, onClose, onContactClick }: { isOpen: bool
               <div className="relative mb-3 flex justify-center">
                 <div className="w-24 h-24 md:w-28 md:h-28 rounded-full p-[2px] bg-gradient-to-b from-yellow-300 to-yellow-600 shadow-[0_0_30px_rgba(234,179,8,0.3)]">
                   <div className="w-full h-full rounded-full overflow-hidden border-[3px] border-[#0A0A0A]">
-                    <img src="/frames/ezgif-frame-001.jpg" alt="Sohel Shaikh" className="w-full h-full object-cover object-[center_20%]" />
+                    <div className="relative w-full h-full">
+                      <Image src="/frames/ezgif-frame-001.jpg" alt="Sohel Shaikh" fill sizes="100px" className="object-cover object-[center_20%]" />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -1119,7 +1132,9 @@ export default function PortfolioClient({
                   <div className="flex items-center">
                     {/* Profile Image / 3D Canvas */}
                     <div className="w-10 h-10 md:w-20 md:h-20 rounded-full overflow-hidden border-2 border-primary/20 mr-2 md:mr-4">
-                      <img src="/frames/ezgif-frame-001.jpg" alt="Profile" className="w-full h-full object-cover" />
+                      <div className="relative w-full h-full">
+                        <Image src="/frames/ezgif-frame-001.jpg" alt="Profile" fill sizes="80px" className="object-cover" />
+                      </div>
                     </div>
                     <div>
                       <p className="text-[12px] md:text-sm text-gray-400">Available for</p>
@@ -1178,8 +1193,8 @@ export default function PortfolioClient({
             >
               <div className="relative z-10 w-full max-w-[500px] aspect-[4/5] p-2 md:p-4 bg-card rounded-xl md:rounded-2xl neumorphic border border-white/5 scale-110 origin-top-right md:scale-100 md:origin-center">
                 <div className="w-full h-full rounded-lg md:rounded-xl overflow-hidden relative group">
-                  <div ref={box1Ref} className="w-full h-full opacity-0">
-                    <img src="/frames/ezgif-frame-001.jpg" className="w-full h-full object-cover" alt="Profile placeholder" />
+                  <div ref={box1Ref} className="w-full h-full opacity-0 relative">
+                    <Image src="/frames/ezgif-frame-001.jpg" fill priority sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" alt="Profile placeholder" />
                   </div>
                   <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-background to-transparent opacity-80"></div>
                 </div>
@@ -1205,7 +1220,9 @@ export default function PortfolioClient({
               <div className="flex items-center gap-3 mb-8">
                 <div className="flex items-center">
                   <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-primary/20 mr-2">
-                    <img src="/frames/ezgif-frame-001.jpg" alt="Profile" className="w-full h-full object-cover" />
+                    <div className="relative w-full h-full">
+                      <Image src="/frames/ezgif-frame-001.jpg" alt="Profile" fill sizes="40px" className="object-cover" />
+                    </div>
                   </div>
                   <div>
                     <p className="text-lg text-gray-400">Available for</p>
@@ -1272,8 +1289,8 @@ export default function PortfolioClient({
               >
                 <div className="p-2 md:p-4 bg-card rounded-xl md:rounded-3xl neumorphic border border-white/5 aspect-[3/4] relative">
                   <div className="w-full h-full rounded-lg md:rounded-2xl overflow-hidden grayscale">
-                    <div ref={box2Ref} className="w-full h-full opacity-0">
-                      <img src="/frames/ezgif-frame-240.jpg" className="w-full h-full object-cover" alt="Profile placeholder 2" />
+                    <div ref={box2Ref} className="w-full h-full opacity-0 relative">
+                      <Image src="/frames/ezgif-frame-240.jpg" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" alt="Profile placeholder 2" />
                     </div>
                   </div>
                   <div className="absolute -bottom-2 left-2 md:left-auto md:-bottom-8 md:-right-8 p-2 md:p-6 bg-card rounded-lg md:rounded-2xl neumorphic border border-white/5 text-center z-50">

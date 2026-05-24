@@ -615,7 +615,7 @@ const AboutDeveloperModal = ({ isOpen, onClose, onContactClick }: { isOpen: bool
 
             <button
               onClick={onClose}
-              className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-white/5 border border-white/10 text-gray-400 hover:text-white hover:bg-white/10 transition-colors z-10"
+              className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-white/5 border border-white/10 text-gray-400 hover:text-white hover:bg-white/10 transition-colors z-[100] cursor-pointer"
             >
               <X size={18} />
             </button>
@@ -727,9 +727,9 @@ const AboutDeveloperModal = ({ isOpen, onClose, onContactClick }: { isOpen: bool
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={onClose}
-                className="w-full py-3 rounded-xl bg-gradient-to-r from-[#F2C14E] to-[#D59832] text-black font-bold text-xs tracking-wide flex items-center justify-center gap-2 hover:scale-[1.02] transition-transform shadow-[0_0_20px_rgba(234,179,8,0.3)] mb-4"
+                className="w-full py-[14px] rounded-xl bg-gradient-to-r from-[#BA8124] via-[#DEAA40] to-[#E8B744] text-[#111111] font-bold text-[13px] tracking-wide flex items-center justify-center gap-2 hover:scale-[1.02] transition-transform shadow-[0_0_20px_rgba(234,179,8,0.2)] mb-5"
               >
-                <Send size={14} className="fill-black" />
+                <Send size={16} strokeWidth={2.5} />
                 LET'S BUILD SOMETHING AMAZING
               </a>
 
@@ -2026,16 +2026,21 @@ export default function PortfolioClient({
 
           <div className="pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8">
             <div className="flex flex-col md:flex-row items-center gap-4 md:gap-8 text-gray-600 text-lg md:text-sm font-semibold tracking-wider uppercase">
-              <span className="hover:text-primary cursor-default transition-colors">© 2026 Analytics Portfolio</span>
+              <span className="hover:text-primary cursor-default transition-colors">© 2026 AI MetaWorld</span>
               <div className="hidden md:block w-px h-4 bg-white/10"></div>
               <a href="#privacy" onClick={(e) => { e.preventDefault(); setActiveModal('privacy'); }} className="hover:text-white transition-colors">Privacy Policy</a>
               <a href="#terms" onClick={(e) => { e.preventDefault(); setActiveModal('terms'); }} className="hover:text-white transition-colors">Terms of Service</a>
-              <a href="#developer" onClick={(e) => { e.preventDefault(); setIsDeveloperModalOpen(true); }} className="hover:text-yellow-500 text-yellow-500/80 font-bold transition-colors flex items-center gap-1"><User size={14} /> About Developer</a>
             </div>
 
-            <p className="text-gray-500 text-lg md:text-sm font-medium tracking-wide bg-card px-6 py-3 rounded-full border border-white/5 neumorphic-inner">
-              Crafted with <span className="text-primary mx-1">❤</span> by <span className="text-white font-bold">Sohel Shaikh</span>
-            </p>
+            <div className="flex items-center text-sm font-medium tracking-wide bg-[#111111]/80 px-6 py-3 rounded-full border border-white/5 shadow-[0_0_20px_rgba(0,0,0,0.5)] backdrop-blur-sm gap-4">
+              <span className="text-gray-300 flex items-center gap-1.5 text-[13px]">
+                Crafted by <span className="text-blue-300 font-semibold tracking-wide">AI MetaWorld</span> <Sparkles size={14} className="text-yellow-400 fill-yellow-400" />
+              </span>
+              <div className="w-px h-4 bg-white/10"></div>
+              <a href="#developer" onClick={(e) => { e.preventDefault(); setIsDeveloperModalOpen(true); }} className="text-[#E8B744] font-bold hover:text-yellow-300 transition-colors uppercase tracking-widest text-[11px]">
+                ABOUT DEVELOPER
+              </a>
+            </div>
           </div>
         </div>
       </footer>

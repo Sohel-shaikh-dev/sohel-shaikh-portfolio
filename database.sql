@@ -15,7 +15,14 @@ CREATE TABLE site_settings (
   cv_pdf_path text,
   contact_email text,
   contact_phone text,
-  whatsapp_number text
+  whatsapp_number text,
+  instagram_url text,
+  linkedin_url text,
+  github_url text,
+  youtube_url text,
+  facebook_url text,
+  email text,
+  website_url text
 );
 
 -- 2. Projects (Power BI Desktop Centric)

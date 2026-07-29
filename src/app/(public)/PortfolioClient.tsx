@@ -6,6 +6,7 @@
  */
 
 import { motion, useScroll, useTransform, useMotionValue, useSpring, useMotionTemplate, AnimatePresence } from 'motion/react';
+import { useRouter } from 'next/navigation';
 import {
   Facebook,
   Instagram,
@@ -46,10 +47,13 @@ import {
   Sparkles
 } from 'lucide-react';
 import React, { useState, useRef, useTransition, useEffect } from 'react';
+import { CertificateDetailsModal } from '@/components/CertificateDetailsModal';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
+import Link from 'next/link';
 import { submitContactForm } from './actions';
 import { AlertModal } from '../../components/admin/AlertModal';
+import { SocialIcon, getPlatformColors } from '@/components/SocialIconMap';
 
 const ScrollyCanvas = dynamic(() => import('../../components/ScrollyCanvas').then(mod => mod.ScrollyCanvas), { 
   ssr: false,
@@ -57,8 +61,8 @@ const ScrollyCanvas = dynamic(() => import('../../components/ScrollyCanvas').the
 });
 const JourneyAnimation = dynamic(() => import('../../components/JourneyAnimation').then(mod => mod.JourneyAnimation), { 
   ssr: false,
-  loading: () => <div className="w-full min-h-[500px] animate-pulse bg-white/5 rounded-2xl flex items-center justify-center text-gray-500">Loading journey...</div>
 });
+
 const FirefliesBackground = dynamic(() => import('../../components/FirefliesBackground').then(mod => mod.FirefliesBackground), { ssr: false });
 
 const ExperienceCard = ({ exp, index, isLast }: { exp: any, index: number, isLast: boolean, key?: any }) => {
@@ -102,21 +106,54 @@ const ExperienceCard = ({ exp, index, isLast }: { exp: any, index: number, isLas
           initial={{ opacity: 0, x: exp.side === 'left' ? -30 : 30 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, margin: "-10% 0px" }}
-          transition={{ duration: 0.8, delay: index * 0.1 }}
+          transition={{ duration: 0.2, delay: index * 0.05 }}
           className="p-5 md:p-8 bg-card rounded-2xl md:rounded-3xl neumorphic border border-white/5 relative group hover:bg-gradient-to-br from-[#1e2124] to-[#23272b] transition-all"
         >
-          <div className="flex flex-wrap items-center justify-between gap-2 md:gap-4 mb-3 md:mb-6">
-            <span className="px-3 md:px-4 py-1 md:py-1.5 bg-background rounded-md md:rounded-lg text-primary text-[12px] md:text-xs font-bold neumorphic-inner">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 md:gap-4 mb-4 md:mb-6">
+            <div className="flex items-center gap-4">
+              {exp.logo && (
+                <div className="w-12 h-12 md:w-14 md:h-14 rounded-xl overflow-hidden bg-white/5 border border-white/10 flex-shrink-0 relative">
+                  <Image 
+                    src={exp.logo} 
+                    alt={`${exp.company} logo`}
+                    fill
+                    className="object-contain p-2"
+                    loading="lazy"
+                  />
+                </div>
+              )}
+              <div>
+                <h3 className="text-lg md:text-2xl font-bold text-white group-hover:text-primary transition-colors leading-tight">
+                  {exp.title}
+                </h3>
+                <p className="text-gray-400 text-[13px] md:text-sm font-semibold mt-1">
+                  {exp.company} <span className="mx-1">•</span> <span className="text-primary/90">{exp.experience_type}</span>
+                </p>
+              </div>
+            </div>
+            <span className="self-start md:self-auto px-3 py-1.5 bg-background rounded-lg text-primary text-[11px] md:text-xs font-bold neumorphic-inner whitespace-nowrap">
               {exp.year}
             </span>
-            <p className="text-gray-500 text-[12px] md:text-sm font-semibold">{exp.company}</p>
           </div>
-          <h3 className="text-lg md:text-2xl font-bold text-white mb-2 md:mb-4 group-hover:text-primary transition-colors">
-            {exp.title}
-          </h3>
-          <p className="text-gray-400 leading-relaxed text-[12px] md:text-sm">
-            {exp.desc}
-          </p>
+
+          <ul className="text-gray-400 leading-relaxed text-[13px] md:text-sm space-y-2 list-none pl-0">
+            {exp.bullet_points?.map((bullet: string, i: number) => (
+              <li key={i} className="flex gap-2">
+                <span className="text-primary mt-1.5 flex-shrink-0">
+                  <div className="w-1.5 h-1.5 rounded-full bg-primary" />
+                </span>
+                <span>{bullet}</span>
+              </li>
+            ))}
+            {(!exp.bullet_points || exp.bullet_points.length === 0) && exp.desc && (
+              <li className="flex gap-2">
+                <span className="text-primary mt-1.5 flex-shrink-0">
+                  <div className="w-1.5 h-1.5 rounded-full bg-primary" />
+                </span>
+                <span>{exp.desc}</span>
+              </li>
+            )}
+          </ul>
 
           {/* Connector Arrow */}
           <div className={`absolute top-9 w-3 h-3 md:w-4 md:h-4 bg-card border-white/5 border-t border-l -left-1.5 rotate-[-45deg] ${exp.side === 'left' ? 'md:-right-2 md:left-auto md:rotate-[135deg]' : 'md:-left-2'}`}></div>
@@ -130,6 +167,7 @@ const ProjectTiltCard = ({ project, index }: { project: any, index: number, key?
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
   const x = useMotionValue(0);
   const y = useMotionValue(0);
+  const router = useRouter();
 
   const mouseXSpring = useSpring(x, { stiffness: 300, damping: 30 });
   const mouseYSpring = useSpring(y, { stiffness: 300, damping: 30 });
@@ -160,15 +198,28 @@ const ProjectTiltCard = ({ project, index }: { project: any, index: number, key?
     y.set(0);
   };
 
+  const navigateToProject = (e: React.MouseEvent) => {
+    e.preventDefault();
+    router.push(`/projects/${project.slug}`);
+  };
+
   return (
     <motion.div
       style={isMobile ? {} : { rotateX, rotateY, transformStyle: "preserve-3d" }}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
+      onClick={navigateToProject}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          router.push(`/projects/${project.slug}`);
+        }
+      }}
+      tabIndex={0}
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      className="relative group p-3 md:p-6 bg-card rounded-xl md:rounded-3xl neumorphic border border-white/5 transition-all w-full h-full"
+      className="relative group p-3 md:p-6 bg-card rounded-xl md:rounded-3xl neumorphic border border-white/5 transition-all w-full h-full flex flex-col cursor-pointer hover:border-primary/30 outline-none focus-visible:ring-2 focus-visible:ring-primary"
     >
       {/* Spotlight overlay (Desktop only) */}
       {!isMobile && (
@@ -180,22 +231,17 @@ const ProjectTiltCard = ({ project, index }: { project: any, index: number, key?
 
       {/* Pop-out content wrapper */}
       <div style={isMobile ? {} : { transform: "translateZ(40px)" }} className="relative z-20 h-full flex flex-col">
-        <div className="relative overflow-hidden rounded-lg md:rounded-2xl aspect-video mb-3 md:mb-8 shrink-0">
+        <div className="block relative overflow-hidden rounded-lg md:rounded-2xl aspect-video mb-3 md:mb-8 shrink-0 group/img">
           <Image
             src={project.image}
             alt={project.title}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            className="object-cover transition-transform duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0"
+            className="object-cover transition-transform duration-300 group-hover/img:scale-110"
           />
           {/* Desktop Hover Overlay */}
-          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity hidden md:flex items-center justify-center gap-4">
-            <button className="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white hover:scale-110 transition-transform">
-              <ExternalLink size={20} />
-            </button>
-            <button className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-black hover:scale-110 transition-transform">
-              <Github size={20} />
-            </button>
+          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/img:opacity-100 transition-opacity hidden md:flex items-center justify-center">
+             <span className="bg-primary px-6 py-2 rounded-full font-bold text-white tracking-widest uppercase text-xs hover:scale-105 transition-transform">View Project</span>
           </div>
         </div>
 
@@ -208,21 +254,31 @@ const ProjectTiltCard = ({ project, index }: { project: any, index: number, key?
               <div className="w-1 h-1 rounded-full bg-gray-600"></div>
             </div>
           </div>
-          <h3 className="text-lg md:text-sm md:text-xl font-bold text-white mb-1 md:mb-4 group-hover:text-primary transition-colors leading-tight">
-            {project.title}
-          </h3>
+          <div>
+            <h3 className="text-lg md:text-sm md:text-xl font-bold text-white mb-1 md:mb-4 group-hover:text-primary transition-colors leading-tight">
+              {project.title}
+            </h3>
+          </div>
           <p className="text-gray-500 text-[12px] md:text-sm leading-snug md:leading-relaxed mb-0 md:mb-4 line-clamp-3 md:line-clamp-none flex-grow">
             {project.desc}
           </p>
 
-          {/* Mobile Action Buttons (Visible only on mobile) */}
-          <div className="flex flex-col md:hidden gap-1.5 mt-3">
-            <button className="w-full py-1.5 bg-primary/10 text-primary rounded-md text-[12px] font-bold flex items-center justify-center gap-1.5">
-              <ExternalLink size={10} /> Demo
-            </button>
-            <button className="w-full py-1.5 bg-white/5 text-white rounded-md text-[12px] font-bold flex items-center justify-center gap-1.5 border border-white/10">
-              <Github size={10} /> Source
-            </button>
+          {/* Action Buttons */}
+          <div className="flex flex-col md:flex-row gap-2 mt-4">
+            <div className="w-full md:w-auto px-4 py-2 bg-primary/10 text-primary rounded-lg text-xs font-bold flex items-center justify-center gap-2 hover:bg-primary hover:text-white transition-colors text-center pointer-events-none group-hover:pointer-events-auto">
+              View Project <ArrowRight size={14} />
+            </div>
+            {project.githubLink && (
+              <a 
+                href={project.githubLink} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                onClick={(e) => e.stopPropagation()}
+                className="w-full md:w-auto px-4 py-2 bg-white/5 text-white rounded-lg text-xs font-bold flex items-center justify-center gap-2 border border-white/10 hover:bg-white hover:text-black transition-colors text-center z-30 relative"
+              >
+                <Github size={14} /> GitHub
+              </a>
+            )}
           </div>
         </div>
       </div>
@@ -264,11 +320,11 @@ const CaseStudyCard = ({ study, index }: { study: any, index: number, key?: any 
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.8 }}
+      transition={{ duration: 0.2 }}
       className="group grid grid-cols-1 lg:grid-cols-12 gap-10 items-center p-8 md:p-12 bg-card rounded-[2.5rem] neumorphic border border-white/5 transition-all hover:border-white/10 relative overflow-hidden"
     >
       {/* Background glow on hover */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
 
       {/* Visual Side */}
       <div className={`lg:col-span-5 ${index % 2 !== 0 ? 'lg:order-2' : ''}`} style={{ perspective: 1000 }}>
@@ -284,7 +340,7 @@ const CaseStudyCard = ({ study, index }: { study: any, index: number, key?: any 
               alt={study.title}
               fill
               sizes="(max-width: 768px) 100vw, 50vw"
-              className="object-cover grayscale group-hover:grayscale-0 transition-all duration-700 scale-105 group-hover:scale-100"
+              className="object-cover transition-all duration-300 scale-105 group-hover:scale-100"
             />
           </div>
           {/* Subtle floating elements behind image */}
@@ -294,42 +350,35 @@ const CaseStudyCard = ({ study, index }: { study: any, index: number, key?: any 
       </div>
 
       {/* Content Side */}
-      <div className="lg:col-span-7 relative z-10">
-        <span className="text-primary font-bold text-lg md:text-xs uppercase tracking-widest mb-4 block">{study.subtitle}</span>
-        <h3 className="text-3xl md:text-4xl font-extrabold text-white mb-8 group-hover:text-primary transition-colors duration-500">{study.title}</h3>
+      <div className="lg:col-span-7 relative z-10 flex flex-col h-full">
+        <span className="text-primary font-bold text-lg md:text-xs uppercase tracking-widest mb-4 block">{study.client || 'Case Study'}</span>
+        <h3 className="text-3xl md:text-4xl font-extrabold text-white mb-8 group-hover:text-primary transition-colors duration-300">{study.title}</h3>
 
-        <div className="space-y-8 mb-10">
-          <div className="group/item">
-            <h4 className="text-gray-100 font-bold mb-2 flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-primary/50 group-hover/item:bg-primary group-hover/item:shadow-[0_0_10px_rgba(255,1,79,0.8)] transition-all"></span> The Challenge
-            </h4>
-            <p className="text-gray-500 text-lg md:text-sm leading-relaxed pl-4 border-l border-white/5 group-hover/item:border-primary/30 transition-colors">{study.challenge}</p>
-          </div>
-          <div className="group/item">
-            <h4 className="text-gray-100 font-bold mb-2 flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-blue-500/50 group-hover/item:bg-blue-500 group-hover/item:shadow-[0_0_10px_rgba(59,130,246,0.8)] transition-all"></span> The Solution
-            </h4>
-            <p className="text-gray-500 text-lg md:text-sm leading-relaxed pl-4 border-l border-white/5 group-hover/item:border-blue-500/30 transition-colors">{study.solution}</p>
-          </div>
-
-          {/* Glowing Key Result Box */}
-          <div className="p-6 bg-background/50 rounded-2xl border border-white/5 border-l-4 border-l-primary neumorphic-inner relative overflow-hidden group-hover:shadow-[0_0_30px_rgba(255,1,79,0.15)] group-hover:border-l-primary transition-all duration-500">
-            <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
-            <h4 className="text-primary font-bold mb-2 relative z-10 flex items-center gap-2">
-              <span className="w-1.5 h-1.5 bg-primary rounded-full animate-pulse"></span>
-              Key Result
-            </h4>
-            <p className="text-white text-lg font-semibold tracking-tight relative z-10">{study.result}</p>
-          </div>
+        <div className="space-y-8 mb-10 flex-grow">
+          {study.short_description && (
+            <p className="text-gray-400 text-lg md:text-sm leading-relaxed">{study.short_description}</p>
+          )}
         </div>
 
-        <div className="flex flex-wrap gap-3">
-          {study.tags.map((tag: string) => (
+        <div className="flex flex-wrap gap-3 mb-8">
+          {study.tags && study.tags.map((tag: string) => (
             <span key={tag} className="px-4 py-2 bg-card rounded-lg text-[12px] font-bold text-gray-400 uppercase tracking-wider neumorphic-inner border border-white/5 hover:border-primary/50 hover:text-white transition-colors cursor-default">
               {tag}
             </span>
           ))}
         </div>
+
+        {study.slug && (
+          <div className="mt-auto">
+            <a 
+              href={`/case-studies/${study.slug}`} 
+              className="inline-flex items-center gap-2 px-8 py-3 bg-primary text-white rounded-xl font-bold transition-all hover:bg-primary/90 shadow-[0_0_20px_rgba(255,1,79,0.3)] hover:shadow-[0_0_30px_rgba(255,1,79,0.5)] text-sm whitespace-nowrap group/btn"
+            >
+              View Full Case Study
+              <span className="inline-block group-hover/btn:translate-x-1 transition-transform">→</span>
+            </a>
+          </div>
+        )}
       </div>
     </motion.div>
   );
@@ -405,11 +454,11 @@ const Service3DCard = ({ skill, index }: { skill: any, index: number, key?: any 
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        transition={{ delay: index * 0.1 }}
-        className="group h-full p-5 md:p-10 bg-card/40 backdrop-blur-xl rounded-2xl md:rounded-3xl neumorphic border border-white/5 hover:border-white/20 hover:bg-gradient-to-br from-[#1e2124]/90 to-[#23272b]/90 transition-colors duration-500 relative"
+        transition={{ delay: index * 0.05 }}
+        className="group h-full p-5 md:p-10 bg-card/40 backdrop-blur-xl rounded-2xl md:rounded-3xl neumorphic border border-white/5 hover:border-white/20 hover:bg-gradient-to-br from-[#1e2124]/90 to-[#23272b]/90 transition-colors duration-300 relative"
       >
         {/* Glow effect behind */}
-        <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/5 rounded-2xl md:rounded-3xl transition-colors duration-500 blur-xl pointer-events-none"></div>
+        <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/5 rounded-2xl md:rounded-3xl transition-colors duration-300 blur-xl pointer-events-none"></div>
 
         {/* 3D Popping Content */}
         <div style={isMobile ? {} : { transform: "translateZ(50px)" }} className="relative z-10 transition-transform duration-300">
@@ -431,7 +480,7 @@ const Service3DCard = ({ skill, index }: { skill: any, index: number, key?: any 
   );
 };
 
-const CertificationCard = ({ cert, index }: { cert: any, index: number, key?: any }) => {
+const CertificationCard = ({ cert, index, onClick }: { cert: any, index: number, onClick: () => void, key?: any }) => {
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -468,10 +517,11 @@ const CertificationCard = ({ cert, index }: { cert: any, index: number, key?: an
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        transition={{ delay: index * 0.1 }}
-        className="group h-full p-5 md:p-8 bg-card/40 backdrop-blur-xl rounded-2xl md:rounded-3xl neumorphic border border-white/5 hover:border-white/20 hover:bg-gradient-to-br from-[#1e2124]/90 to-[#23272b]/90 transition-colors duration-500 relative flex flex-col"
+        transition={{ delay: index * 0.05 }}
+        onClick={onClick}
+        className="group h-full p-5 md:p-8 bg-card/40 backdrop-blur-xl rounded-2xl md:rounded-3xl neumorphic border border-white/5 hover:border-white/20 hover:bg-gradient-to-br from-[#1e2124]/90 to-[#23272b]/90 transition-colors duration-300 relative flex flex-col cursor-pointer"
       >
-        <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/5 rounded-2xl md:rounded-3xl transition-colors duration-500 blur-xl pointer-events-none"></div>
+        <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/5 rounded-2xl md:rounded-3xl transition-colors duration-300 blur-xl pointer-events-none"></div>
 
         <div style={isMobile ? {} : { transform: "translateZ(40px)" }} className="relative z-10 transition-transform duration-300 flex flex-col h-full">
           <div className="flex justify-between items-start mb-4 md:mb-6">
@@ -481,13 +531,25 @@ const CertificationCard = ({ cert, index }: { cert: any, index: number, key?: an
           <h3 className="text-lg md:text-2xl font-bold mb-3 text-white group-hover:text-primary transition-colors leading-tight">
             {cert.title}
           </h3>
-          <p className="text-[11px] md:text-sm text-gray-400 leading-snug md:leading-relaxed group-hover:text-gray-300 transition-colors flex-grow mb-6 md:mb-8">
-            {cert.desc}
+          <p className="text-[11px] md:text-sm text-gray-400 leading-snug md:leading-relaxed group-hover:text-gray-300 transition-colors flex-grow mb-6 md:mb-8 line-clamp-3">
+            {cert.desc && !cert.desc.startsWith('http') ? cert.desc : 'View details to see more about this certification.'}
           </p>
           <div className="mt-auto">
-            <button className="inline-flex items-center gap-2 text-[12px] md:text-xs font-bold text-white group-hover:text-primary transition-colors uppercase tracking-widest">
-              View Certificate <ExternalLink size={14} />
-            </button>
+            {cert.credentialUrl ? (
+              <a 
+                href={cert.credentialUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                className="inline-flex items-center gap-2 text-[12px] md:text-xs font-bold text-white hover:text-primary transition-colors uppercase tracking-widest z-30 relative"
+              >
+                View Certificate <ExternalLink size={14} />
+              </a>
+            ) : (
+              <button className="inline-flex items-center gap-2 text-[12px] md:text-xs font-bold text-white group-hover:text-primary transition-colors uppercase tracking-widest">
+                View Details <ArrowRight size={14} />
+              </button>
+            )}
           </div>
         </div>
       </motion.div>
@@ -561,7 +623,7 @@ const NeonSendButton = ({ children, className, ...props }: any) => {
       className={`relative group w-full ${className}`}
       {...props}
     >
-      <div className="absolute -inset-1 bg-gradient-to-r from-primary via-[#ff4d79] to-[#00f0ff] rounded-xl blur opacity-0 group-hover:opacity-100 transition duration-500 group-hover:duration-200 animate-pulse"></div>
+      <div className="absolute -inset-1 bg-gradient-to-r from-primary via-[#ff4d79] to-[#00f0ff] rounded-xl blur opacity-0 group-hover:opacity-100 transition duration-300 group-hover:duration-200 animate-pulse"></div>
 
       <div className="relative w-full h-full bg-card group-hover:bg-background border border-white/10 group-hover:border-primary/50 rounded-xl px-8 py-4 flex items-center justify-center gap-2 transition-all duration-300 shadow-[0_10px_30px_rgba(0,0,0,0.5)] group-hover:shadow-[0_0_40px_rgba(255,1,79,0.4)]">
         <span className="font-bold uppercase tracking-[0.2em] text-lg md:text-xs text-white group-hover:text-primary transition-colors flex items-center justify-center gap-2">
@@ -607,7 +669,7 @@ const FloatingWhatsApp = () => {
   );
 };
 
-const AboutDeveloperModal = ({ isOpen, onClose, onContactClick }: { isOpen: boolean, onClose: () => void, onContactClick: () => void }) => {
+const AboutDeveloperModal = ({ isOpen, onClose, onContactClick, initialSettings, initialDeveloperSocialLinks = [] }: { isOpen: boolean, onClose: () => void, onContactClick: () => void, initialSettings?: any, initialDeveloperSocialLinks?: any[] }) => {
   return (
     <AnimatePresence>
       {isOpen && (
@@ -718,24 +780,17 @@ const AboutDeveloperModal = ({ isOpen, onClose, onContactClick }: { isOpen: bool
                 </div>
               </div>
               <div className="flex justify-center flex-wrap gap-3 mb-5 w-full px-2">
-                <a href="https://instagram.com/ai_metaworld" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-pink-500/40 flex items-center justify-center text-pink-500 hover:bg-pink-500 hover:text-white transition-all shadow-[0_0_10px_rgba(236,72,153,0.15)]">
-                  <Instagram size={16} />
-                </a>
-                <a href="https://www.linkedin.com/in/sohel-shaikhh/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-blue-500/40 flex items-center justify-center text-blue-500 hover:bg-blue-500 hover:text-white transition-all shadow-[0_0_10px_rgba(59,130,246,0.15)]">
-                  <Linkedin size={16} />
-                </a>
-                <a href="https://github.com/Sohel-shaikh-dev" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-white/30 flex items-center justify-center text-white hover:bg-white hover:text-black transition-all shadow-[0_0_10px_rgba(255,255,255,0.1)]">
-                  <Github size={16} />
-                </a>
-                <a href="https://www.youtube.com/@Aimetaworld" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-red-500/40 flex items-center justify-center text-red-500 hover:bg-red-500 hover:text-white transition-all shadow-[0_0_10px_rgba(239,68,68,0.15)]">
-                  <Youtube size={16} />
-                </a>
-                <a href="https://www.facebook.com/share/1asBpmQEbw/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-blue-600/40 flex items-center justify-center text-blue-600 hover:bg-blue-600 hover:text-white transition-all shadow-[0_0_10px_rgba(37,99,235,0.15)]">
-                  <Facebook size={16} />
-                </a>
-                <a href="mailto:aimetaworldd@gmail.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-orange-500/40 flex items-center justify-center text-orange-500 hover:bg-orange-500 hover:text-white transition-all shadow-[0_0_10px_rgba(249,115,22,0.15)]">
-                  <Mail size={16} />
-                </a>
+                {initialDeveloperSocialLinks?.filter((l: any) => l.is_active && l.url).map((social: any, i: number) => (
+                  <a
+                    key={i}
+                    href={social.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`w-10 h-10 rounded-full border flex items-center justify-center transition-all ${getPlatformColors(social.platform_key)}`}
+                  >
+                    <SocialIcon iconName={social.icon_name} size={16} />
+                  </a>
+                ))}
               </div>
 
               {/* CTA Button */}
@@ -827,24 +882,84 @@ const PolicyModal = ({ isOpen, onClose, type }: { isOpen: boolean, onClose: () =
   );
 };
 
+
+const ROLES = [
+  "Power BI Developer",
+  "Data Analyst",
+  "Business Intelligence Analyst",
+  "Dashboard Designer",
+  "SQL Enthusiast",
+  "Data Visualization Specialist"
+];
+
+const TypewriterText = () => {
+  const [currentText, setCurrentText] = useState("");
+  const [roleIndex, setRoleIndex] = useState(0);
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  useEffect(() => {
+    const role = ROLES[roleIndex];
+    let timeoutId: NodeJS.Timeout;
+
+    if (!isDeleting && currentText === role) {
+      timeoutId = setTimeout(() => setIsDeleting(true), 2000);
+    } else if (isDeleting && currentText === "") {
+      setIsDeleting(false);
+      setRoleIndex((prev) => (prev + 1) % ROLES.length);
+    } else {
+      const nextDelay = isDeleting ? 30 : 60;
+      timeoutId = setTimeout(() => {
+        setCurrentText((prev) => 
+          isDeleting 
+            ? role.substring(0, prev.length - 1)
+            : role.substring(0, prev.length + 1)
+        );
+      }, nextDelay + (Math.random() * 20 - 10));
+    }
+
+    return () => clearTimeout(timeoutId);
+  }, [currentText, isDeleting, roleIndex]);
+
+  return (
+    <span className="text-gray-100 text-2xl sm:text-3xl md:text-3xl lg:text-4xl block mt-1 md:mt-2 relative min-h-[1.5em]">
+      <span className="invisible pointer-events-none select-none block" aria-hidden="true">
+        Business Intelligence Analyst
+      </span>
+      <span className="absolute inset-0 block">
+        {currentText}
+        <motion.span
+          animate={{ opacity: [1, 0, 1] }}
+          transition={{ repeat: Infinity, duration: 0.2, ease: "linear" }}
+          className="inline-block w-[3px] h-[0.9em] bg-primary ml-1.5 align-middle -translate-y-[0.05em]"
+        />
+      </span>
+    </span>
+  );
+};
+
 export default function PortfolioClient({ 
   initialSettings, 
   initialProjects = [], 
   initialCaseStudies = [], 
   initialCertifications = [], 
-  initialExperiences = [] 
+  initialExperiences = [],
+  initialSocialLinks = [],
+  initialDeveloperSocialLinks = []
 }: { 
   initialSettings?: any;
   initialProjects?: any[];
   initialCaseStudies?: any[];
   initialCertifications?: any[];
   initialExperiences?: any[];
+  initialSocialLinks?: any[];
+  initialDeveloperSocialLinks?: any[];
 }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeModal, setActiveModal] = useState<'privacy' | 'terms' | null>(null);
   const [showAllProjects, setShowAllProjects] = useState(false);
   const [isDeveloperModalOpen, setIsDeveloperModalOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
+  const [selectedCert, setSelectedCert] = useState<any>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -913,9 +1028,7 @@ export default function PortfolioClient({
     success: initialSettings?.stats_success_rate || '98%'
   };
 
-  const cvUrl = initialSettings?.cv_pdf_path 
-    ? `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/portfolio-media/${initialSettings.cv_pdf_path}?download=`
-    : '#';
+  const cvUrl = '/api/resume';
 
 
   const navLinks = [
@@ -930,12 +1043,13 @@ export default function PortfolioClient({
     { name: 'Contact', href: '#contact' },
   ];
 
-  const socialLinks = [
-    { icon: <Facebook size={20} />, href: 'https://www.facebook.com/share/1asBpmQEbw/' },
-    { icon: <Instagram size={20} />, href: 'https://www.instagram.com/ai_metaworld?igsh=MThqaXl5aXMwbGg3ZA==' },
-    { icon: <Linkedin size={20} />, href: 'https://www.linkedin.com/in/sohel-shaikhh' },
-    { icon: <Github size={20} />, href: 'https://github.com/Sohel-shaikh-dev' },
-  ];
+  const socialLinks = (initialSocialLinks || [])
+    .filter(l => l.is_active && l.url)
+    .map(social => ({
+      icon: <SocialIcon iconName={social.icon_name} size={20} />,
+      href: social.url,
+      platformKey: social.platform_key
+    }));
 
   const skills = [
     { icon: <Database size={20} />, name: 'SQL' },
@@ -968,7 +1082,7 @@ export default function PortfolioClient({
                   document.querySelector(link.href)?.scrollIntoView({ behavior: 'smooth' });
                   setIsMenuOpen(false);
                 }}
-                className={`px-3 py-2 text-[11px] xl:text-[12px] font-bold uppercase tracking-wider transition-all duration-300 relative ${
+                className={`px-3 py-2 text-[11px] xl:text-[12px] font-bold uppercase tracking-wider transition-all duration-300 relative whitespace-nowrap ${
                   isActive ? 'text-primary' : 'text-gray-400 hover:text-white hover:bg-white/5 rounded-full'
                 }`}
               >
@@ -1077,7 +1191,7 @@ export default function PortfolioClient({
                   }}
                   className="group relative w-full py-4 bg-gradient-to-r from-yellow-500/10 to-amber-500/10 border border-yellow-500/30 hover:border-yellow-500/60 rounded-2xl font-bold text-[15px] text-yellow-500 transition-all overflow-hidden shadow-[0_0_15px_rgba(234,179,8,0.1)] hover:shadow-[0_0_25px_rgba(234,179,8,0.2)]"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-r from-yellow-500/0 via-yellow-500/10 to-yellow-500/0 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+                  <div className="absolute inset-0 bg-gradient-to-r from-yellow-500/0 via-yellow-500/10 to-yellow-500/0 -translate-x-full group-hover:translate-x-full transition-transform duration-300"></div>
                   <div className="flex items-center justify-center gap-2.5">
                     <User size={18} className="text-yellow-500" />
                     <span>About Developer</span>
@@ -1099,34 +1213,33 @@ export default function PortfolioClient({
 
       <div ref={heroAboutRef} className="relative">
         {/* Hero Section */}
-        <main id="home" className="pt-24 md:pt-32 pb-12 md:pb-20 px-4 md:px-6">
-          <div className="max-w-7xl mx-auto grid grid-cols-2 gap-4 md:gap-12 items-start md:items-center">
+        <main id="home" className="pt-20 md:pt-32 pb-8 md:pb-20 px-4 md:px-6">
+          <div className="max-w-7xl mx-auto flex flex-row flex-wrap md:grid md:grid-cols-2 gap-y-4 md:gap-12 items-start md:items-center">
 
             {/* Content */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, ease: "easeOut" }}
-              className="z-10"
+              transition={{ duration: 0.25, ease: "easeOut" }}
+              className="z-10 w-[50%] sm:w-[50%] md:w-full flex-shrink-0 pr-1 md:pr-0"
             >
-              <span className="inline-block text-gray-400 tracking-[0.1em] md:tracking-[0.2em] font-medium text-[12px] sm:text-xs md:text-sm mb-2 md:mb-6 uppercase">
+              <span className="inline-block text-gray-400 tracking-[0.1em] md:tracking-[0.2em] font-medium text-[10px] sm:text-xs md:text-sm mb-2 md:mb-6 uppercase">
                 Welcome to my world
               </span>
-              <h1 className="text-4xl sm:text-5xl md:text-5xl lg:text-7xl font-extrabold leading-[1.1] mb-4 md:mb-8">
-                Hi, I'm <br className="block md:hidden" /><span className="text-primary tracking-tight">Sohel Shaikh</span>
+              <h1 className="text-[28px] min-[380px]:text-[32px] sm:text-4xl md:text-5xl lg:text-7xl font-extrabold leading-[1.1] mb-4 md:mb-8">
+                Hi, I'm <br className="block md:hidden" /><span className="text-primary tracking-tight">Sohel <br className="block md:hidden" />Shaikh</span>
                 <br />
-                <span className="text-gray-100 text-2xl sm:text-3xl md:text-3xl lg:text-4xl block mt-1 md:mt-2">a Professional Data Analyst.</span>
+                <TypewriterText />
               </h1>
               <div className="hidden md:block">
                 <p className="text-gray-400 text-lg md:text-sm md:text-lg leading-relaxed max-w-xl mb-6 md:mb-12">
-                  Detail-oriented and analytical Data Analyst with strong skills in Power BI, SQL, DAX, and Excel.
-                  Experienced in building interactive dashboards and transforming raw data into meaningful business insights.
+                  Detail-oriented Data Analyst specializing in Power BI, SQL, DAX and Excel. I build interactive dashboards, automate reporting, and transform raw data into actionable business insights that help organizations make smarter decisions.
                 </p>
 
                 <motion.div
                   initial={{ opacity: 0, x: -50 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.8, ease: "easeOut" }}
+                  transition={{ duration: 0.2, ease: "easeOut" }}
                   className="flex items-center gap-3 md:gap-4 mb-8 md:mb-12"
                 >
                   <div className="flex items-center">
@@ -1188,10 +1301,11 @@ export default function PortfolioClient({
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1, ease: "easeOut" }}
-              className="relative md:ml-auto"
+              transition={{ duration: 0.25, ease: "easeOut" }}
+              onAnimationComplete={() => window.dispatchEvent(new Event('resize'))}
+              className="relative w-[50%] sm:w-[50%] md:w-full flex justify-end"
             >
-              <div className="relative z-10 w-full max-w-[500px] aspect-[4/5] p-2 md:p-4 bg-card rounded-xl md:rounded-2xl neumorphic border border-white/5 scale-110 origin-top-right md:scale-100 md:origin-center">
+              <div className="relative z-10 w-full md:max-w-[500px] aspect-[4/5] p-0 md:p-4 bg-transparent md:bg-card rounded-xl md:rounded-2xl neumorphic max-md:!shadow-none border-none md:border md:border-white/5">
                 <div className="w-full h-full rounded-lg md:rounded-xl overflow-hidden relative group">
                   <div ref={box1Ref} className="w-full h-full opacity-0 relative">
                     <Image src="/frames/ezgif-frame-001.jpg" fill priority sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" alt="Profile placeholder" />
@@ -1201,7 +1315,7 @@ export default function PortfolioClient({
               </div>
 
               {/* Outline Card behind */}
-              <div className="absolute -inset-4 border-2 border-white/5 rounded-[2rem] -z-20 scale-95 opacity-50"></div>
+              <div className="hidden md:block absolute -inset-4 border-2 border-white/5 rounded-[2rem] -z-20 scale-95 opacity-50"></div>
 
             </motion.div>
 
@@ -1209,12 +1323,11 @@ export default function PortfolioClient({
             <motion.div 
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
-              className="col-span-2 flex flex-col md:hidden mt-2 w-full"
+              transition={{ duration: 0.25, delay: 0.1, ease: "easeOut" }}
+              className="flex flex-col md:hidden mt-2 w-full"
             >
-              <p className="text-gray-400 text-lg leading-relaxed mb-6">
-                Detail-oriented and analytical Data Analyst with strong skills in Power BI, SQL, DAX, and Excel.
-                Experienced in building interactive dashboards and transforming raw data into meaningful business insights.
+              <p className="text-gray-400 text-base leading-relaxed mb-6">
+                Detail-oriented Data Analyst specializing in Power BI, SQL, DAX and Excel. I build interactive dashboards, automate reporting, and transform raw data into actionable business insights that help organizations make smarter decisions.
               </p>
 
               <div className="flex items-center gap-3 mb-8">
@@ -1225,8 +1338,8 @@ export default function PortfolioClient({
                     </div>
                   </div>
                   <div>
-                    <p className="text-lg text-gray-400">Available for</p>
-                    <p className="font-bold text-lg text-white">Freelance Work</p>
+                    <p className="text-base text-gray-400">Available for</p>
+                    <p className="font-bold text-base text-white">Freelance Work</p>
                   </div>
                 </div>
               </div>
@@ -1277,41 +1390,44 @@ export default function PortfolioClient({
         {/* About Section */}
         <section id="about" className="py-16 md:py-32 px-4 md:px-6 border-t border-white/5 relative bg-background">
           <div className="max-w-7xl mx-auto">
-            <div className="grid grid-cols-2 lg:grid-cols-12 gap-4 md:gap-16 items-start lg:items-center">
+            <div className="flex flex-row flex-wrap justify-between lg:grid lg:grid-cols-12 gap-y-8 lg:gap-16 items-start lg:items-center">
 
               {/* Image / Visual Column */}
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true, margin: "0px 0px 300px 0px" }}
-                transition={{ duration: 0.8 }}
-                className="col-span-1 lg:col-span-5 relative"
+                transition={{ duration: 0.2 }}
+                onAnimationComplete={() => window.dispatchEvent(new Event('resize'))}
+                className="w-[45%] lg:w-full lg:col-span-5 relative"
               >
                 <div className="p-2 md:p-4 bg-card rounded-xl md:rounded-3xl neumorphic border border-white/5 aspect-[3/4] relative">
-                  <div className="w-full h-full rounded-lg md:rounded-2xl overflow-hidden grayscale">
+                  <div className="w-full h-full rounded-lg md:rounded-2xl overflow-hidden">
                     <div ref={box2Ref} className="w-full h-full opacity-0 relative">
                       <Image src="/frames/ezgif-frame-240.jpg" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" alt="Profile placeholder 2" />
                     </div>
                   </div>
-                  <div className="absolute -bottom-2 left-2 md:left-auto md:-bottom-8 md:-right-8 p-2 md:p-6 bg-card rounded-lg md:rounded-2xl neumorphic border border-white/5 text-center z-50">
-                    <p className="text-lg md:text-xl font-extrabold text-primary leading-none mb-1">Power BI</p>
+                  <div className="absolute -bottom-3 -left-3 md:left-auto md:-bottom-8 md:-right-8 p-1.5 md:p-6 bg-card rounded-lg md:rounded-2xl neumorphic border border-white/5 text-center z-50">
+                    <p className="text-[12px] sm:text-sm md:text-xl font-extrabold text-primary leading-none mb-1 md:mb-1">Power BI</p>
                     <p className="text-[6px] md:text-[12px] uppercase tracking-widest text-gray-500 font-bold leading-tight">Certified</p>
                   </div>
                 </div>
               </motion.div>
 
               {/* Intro Content Column */}
-              <div className="col-span-1 lg:col-span-7">
+              <div className="w-[50%] lg:w-full lg:col-span-7">
                 <motion.div
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "0px 0px 300px 0px" }}
-                  transition={{ duration: 0.8 }}
+                  transition={{ duration: 0.2 }}
                 >
-                  <span className="text-primary uppercase tracking-[0.1em] md:tracking-[0.3em] text-[12px] md:text-sm font-bold block mb-2 md:mb-4">About Me</span>
-                  <h2 className="text-2xl sm:text-3xl md:text-5xl font-extrabold mb-4 md:mb-8 leading-tight">
-                    Data Analysis & Visualization <br className="hidden md:block" />
-                    <span className="text-gray-400">is what I do best.</span>
+                  <span className="text-primary uppercase tracking-[0.1em] md:tracking-[0.3em] text-[10px] md:text-sm font-bold block mb-2 md:mb-4">About Me</span>
+                  <h2 className="text-[20px] min-[375px]:text-[22px] sm:text-3xl md:text-5xl font-extrabold mb-4 md:mb-8 leading-tight md:leading-tight">
+                    Data Analysis <br className="block md:hidden" />
+                    & <br className="block md:hidden" />
+                    Visualization <br className="hidden md:block" />
+                    <span className="text-gray-400 block md:inline mt-1 md:mt-0 text-[18px] min-[375px]:text-[20px] md:text-5xl">is what I do<br className="block md:hidden" /> best.</span>
                   </h2>
 
                   {/* DESKTOP ONLY CONTENT (Hidden on Mobile) */}
@@ -1375,14 +1491,14 @@ export default function PortfolioClient({
               </div>
 
               {/* MOBILE ONLY Full Width Content (Cards, Stats, Resume) */}
-              <div className="col-span-2 lg:hidden">
+              <div className="w-full lg:hidden mt-2">
                 <motion.div
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.8, delay: 0.2 }}
+                  transition={{ duration: 0.2, delay: 0.1 }}
                 >
-                  <p className="text-gray-400 text-lg md:text-xs sm:text-sm md:text-lg leading-relaxed mb-6 md:mb-10 mt-2 md:mt-0">
+                  <p className="text-gray-400 text-base sm:text-sm md:text-lg leading-relaxed mb-6 md:mb-10 mt-2 md:mt-0">
                     I am a passionate Data Analyst specializing in Power BI and SQL.
                     I focus on delivering KPI-based reports, data modeling, and performance optimization
                     to support data-driven business decisions.
@@ -1480,7 +1596,7 @@ export default function PortfolioClient({
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
+              transition={{ duration: 0.2 }}
               className="p-6 md:p-10 bg-card rounded-2xl md:rounded-[2.5rem] neumorphic border border-white/5"
             >
               <h3 className="text-xl md:text-2xl font-bold text-white mb-6 md:mb-10 flex items-center gap-2 md:gap-3">
@@ -1509,7 +1625,7 @@ export default function PortfolioClient({
                         initial={{ width: 0 }}
                         whileInView={{ width: skill.level }}
                         viewport={{ once: true }}
-                        transition={{ duration: 1.5, ease: "easeOut", delay: index * 0.1 }}
+                        transition={{ duration: 0.3, ease: "easeOut", delay: index * 0.05 }}
                         className="h-full bg-gradient-to-r from-primary to-primary/60 rounded-full"
                       />
                     </div>
@@ -1523,7 +1639,7 @@ export default function PortfolioClient({
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
+              transition={{ duration: 0.2 }}
               className="flex flex-col gap-4 md:gap-8"
             >
               <div className="p-6 md:p-10 bg-card rounded-2xl md:rounded-[2.5rem] neumorphic border border-white/5 flex-grow">
@@ -1633,44 +1749,7 @@ export default function PortfolioClient({
 
           <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-10">
             {(() => {
-              const projectsData = initialProjects.length > 0 ? initialProjects : [
-                {
-                  title: "E-commerce Sales Dashboard",
-                  category: "Power BI / Tableau",
-                  image: "https://images.unsplash.com/photo-1551288049-bbda38a5f452?auto=format&fit=crop&q=80&w=800",
-                  desc: "Interactive dashboard visualizing $2M+ in annual sales data with deep-drill capabilities into regions and categories."
-                },
-                {
-                  title: "Customer Segment Analysis",
-                  category: "SQL / Data Modeling",
-                  image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=800",
-                  desc: "Developed complex DAX measures to segment user base into 5 distinct personas, increasing marketing ROI by 25%."
-                },
-                {
-                  title: "Financial Risk Assessment",
-                  category: "SQL / Excel Analytics",
-                  image: "https://images.unsplash.com/photo-1543286386-713bcd534a70?auto=format&fit=crop&q=80&w=800",
-                  desc: "Complex statistical model assessing credit risk for SME loans using historical repayment data and macro-economic factors."
-                },
-                {
-                  title: "Inventory Optimization Tool",
-                  category: "Power Query / Excel",
-                  image: "https://images.unsplash.com/photo-1586769852044-692d6e3703a0?auto=format&fit=crop&q=80&w=800",
-                  desc: "Reduced stockouts by 15% through dynamic inventory forecasting using Power Query and advanced Excel modeling."
-                },
-                {
-                  title: "Healthcare Insights Engine",
-                  category: "Data Visualization",
-                  image: "https://images.unsplash.com/photo-1504868584819-f8e905263543?auto=format&fit=crop&q=80&w=800",
-                  desc: "A holistic view of patient recovery rates and clinic efficiency metrics across 12 different hospital locations."
-                },
-                {
-                  title: "Real Estate Market Trends",
-                  category: "Market Research",
-                  image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&q=80&w=800",
-                  desc: "Scraped and analyzed 50k+ property listings to identify undervalued investment zones in Tier-1 cities."
-                }
-              ];
+              const projectsData = initialProjects || [];
 
               return projectsData.map((project, index) => {
                 const isHiddenOnMobile = !showAllProjects && index >= 4;
@@ -1744,27 +1823,13 @@ export default function PortfolioClient({
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
-            {(initialCertifications.length > 0 ? initialCertifications : [
-              {
-                title: "Google Data Analytics Professional Certificate",
-                platform: "Coursera",
-                date: "2024",
-                desc: "Comprehensive curriculum covering data cleaning, visualization, and analysis using tools like R, SQL, and Tableau."
-              },
-              {
-                title: "Microsoft Certified: Power BI Data Analyst Associate",
-                platform: "Microsoft",
-                date: "2024",
-                desc: "Advanced certification validating expertise in modeling, visualizing, and analyzing data with Power BI."
-              },
-              {
-                title: "Advanced Power BI & DAX",
-                issuing_platform: "Coursera",
-                date_earned: "2023-01-01",
-                description: "Focused on complex DAX query writing, performance optimization, and data extraction for analytical purposes."
-              }
-            ]).map((cert, index) => (
-              <CertificationCard key={index} cert={cert} index={index} />
+            {initialCertifications.map((cert, index) => (
+              <CertificationCard 
+                key={cert.id || index} 
+                cert={cert} 
+                index={index} 
+                onClick={() => setSelectedCert(cert)} 
+              />
             ))}
           </div>
         </div>
@@ -1795,26 +1860,7 @@ export default function PortfolioClient({
 
           <div className="flex flex-col gap-20">
             {(() => {
-              const caseStudiesData = initialCaseStudies.length > 0 ? initialCaseStudies : [
-                {
-                  title: "Optimizing Supply Chain Through Predictive Analytics",
-                  subtitle: "Logistics Industry",
-                  image: "https://images.unsplash.com/photo-1551288049-bbda38a5f452?auto=format&fit=crop&q=80&w=1200",
-                  challenge: "A leading retail chain was facing declining margins despite high footfall. They needed to identify price elasticity and optimal discount windows.",
-                  solution: "Implemented an advanced Power BI data model analyzing 5 years of transaction data. Created a real-time dashboard for monitoring of SKU performance.",
-                  key_result: "12% increase in overall quarterly revenue and 8% reduction in overstock inventory costs.",
-                  tags: ["DAX", "Data Modeling", "Power BI", "Retail"]
-                },
-                {
-                  title: "Healthcare Patient Flow Analysis",
-                  subtitle: "Operational Efficiency Study",
-                  image: "https://images.unsplash.com/photo-1504868584819-f8e905263543?auto=format&fit=crop&q=80&w=1200",
-                  challenge: "A multi-specialty hospital experienced bottleneck clusters in the emergency department, leading to long wait times and patient dissatisfaction.",
-                  solution: "Performed time-series analysis and queuing theory modeling on patient admission data. Identified specific hours where staffing didn't match demand.",
-                  result: "Reduced average patient wait time by 30% without increasing total staff headcount through better scheduling.",
-                  tags: ["Queuing Theory", "SQL", "Tableau", "Healthcare"]
-                }
-              ];
+              const caseStudiesData = initialCaseStudies;
 
               return (
                 <>
@@ -1822,15 +1868,9 @@ export default function PortfolioClient({
                     <CaseStudyCard key={index} study={study} index={index} />
                   ))}
 
-                  {caseStudiesData.length > 2 && (
-                    <div className="mt-20 text-center">
-                      <div className="flex justify-center">
-                        <MagneticButton className="group px-12 py-5 bg-card rounded-2xl neumorphic border border-white/5 text-primary font-bold hover:text-white transition-all hover:shadow-[0_0_20px_rgba(255,1,79,0.2)] flex items-center justify-center cursor-pointer relative overflow-hidden">
-                          <span className="absolute inset-0 bg-primary/10 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
-                          <span className="relative z-10">View All Case Studies</span>
-                          <span className="relative z-10 inline-block ml-3 group-hover:translate-x-2 transition-transform">→</span>
-                        </MagneticButton>
-                      </div>
+                  {caseStudiesData.length === 0 && (
+                    <div className="text-center text-gray-500 font-bold uppercase tracking-widest">
+                      Coming Soon
                     </div>
                   )}
                 </>
@@ -1866,34 +1906,34 @@ export default function PortfolioClient({
           <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
             {[
               {
-                title: "Business Intelligence",
-                desc: "Developing comprehensive BI strategies and interactive dashboards that provide actionable insights.",
+                title: "Power BI Dashboard Development",
+                desc: "Building interactive Power BI dashboards that transform raw data into clear, actionable business insights through modern visualizations and KPI reporting.",
+                icon: <BarChart className="text-primary" size={32} />
+              },
+              {
+                title: "Data Analytics & Business Intelligence",
+                desc: "Analyzing business data to identify trends, measure performance, and support smarter business decisions with interactive reporting solutions.",
                 icon: <LineChart className="text-primary" size={32} />
               },
               {
-                title: "Statistical Modeling",
-                desc: "Applying advanced statistical techniques to identify trends and predict future outcomes with high accuracy.",
+                title: "SQL Data Analysis",
+                desc: "Writing efficient SQL queries to clean, retrieve, transform, and analyze data for reporting, dashboard development, and business insights.",
                 icon: <Database className="text-primary" size={32} />
               },
               {
-                title: "Data Warehousing",
-                desc: "Designing and managing efficient data pipelines and storage solutions for large-scale enterprise data.",
+                title: "Excel & Power Query Automation",
+                desc: "Cleaning, transforming, and preparing datasets using Advanced Excel and Power Query to improve reporting accuracy and reduce manual work.",
                 icon: <Table className="text-primary" size={32} />
               },
               {
-                title: "Advanced Excel Modeling",
-                desc: "Expertise in Power Query, Data Models, and complex formulas for sophisticated data manipulation.",
-                icon: <Database className="text-primary" size={32} />
+                title: "Dashboard Design & Data Visualization",
+                desc: "Designing modern, user-friendly dashboards with meaningful KPIs, interactive filters, and compelling visual storytelling for business users.",
+                icon: <Layout className="text-primary" size={32} />
               },
               {
-                title: "Advanced SQL",
-                desc: "Writing complex queries for data extraction, transformation, and load (ETL) processes.",
-                icon: <Table className="text-primary" size={32} />
-              },
-              {
-                title: "Data Storytelling",
-                desc: "Translating complex data findings into clear, compelling narratives for non-technical stakeholders.",
-                icon: <LineChart className="text-primary" size={32} />
+                title: "Data Cleaning & Data Modeling",
+                desc: "Preparing high-quality datasets through data cleaning, transformation, relationship modeling, and DAX measures to build reliable analytical solutions.",
+                icon: <Layers className="text-primary" size={32} />
               }
             ].map((skill, index) => (
               <Service3DCard key={index} skill={skill} index={index} />
@@ -1929,7 +1969,7 @@ export default function PortfolioClient({
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.2 }}
             className="p-6 md:p-10 bg-card rounded-3xl neumorphic border border-white/5 shadow-2xl"
           >
             <form className="space-y-6" onSubmit={handleContactSubmit}>
@@ -2003,8 +2043,8 @@ export default function PortfolioClient({
                   disabled={isPending}
                   className="group relative inline-flex items-center gap-3 px-8 py-4 bg-card rounded-2xl text-primary font-bold overflow-hidden transition-all hover:text-white disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  <span className="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl"></span>
-                  <div className="absolute inset-0 rounded-2xl border border-white/5 group-hover:border-primary/30 transition-colors duration-500 shadow-[inset_0_0_15px_rgba(0,0,0,0.5)] group-hover:shadow-[inset_0_0_20px_rgba(255,1,79,0.2)]"></div>
+                  <span className="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl"></span>
+                  <div className="absolute inset-0 rounded-2xl border border-white/5 group-hover:border-primary/30 transition-colors duration-300 shadow-[inset_0_0_15px_rgba(0,0,0,0.5)] group-hover:shadow-[inset_0_0_20px_rgba(255,1,79,0.2)]"></div>
                   <span className="relative z-10 flex items-center gap-2">
                     {isPending ? 'Sending...' : 'Send Message'}
                     {!isPending && <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />}
@@ -2169,6 +2209,14 @@ export default function PortfolioClient({
         </div>
       </footer>
 
+      {/* Modals */}
+      {selectedCert && (
+        <CertificateDetailsModal 
+          cert={selectedCert} 
+          onClose={() => setSelectedCert(null)} 
+        />
+      )}
+
       <FloatingWhatsApp />
 
       <AnimatePresence>
@@ -2185,11 +2233,11 @@ export default function PortfolioClient({
         isOpen={isDeveloperModalOpen} 
         onClose={() => setIsDeveloperModalOpen(false)} 
         onContactClick={() => {
-          const contactSection = document.getElementById('contact');
-          if (contactSection) {
-            contactSection.scrollIntoView({ behavior: 'smooth' });
-          }
+          setIsDeveloperModalOpen(false);
+          document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
         }}
+        initialSettings={initialSettings}
+        initialDeveloperSocialLinks={initialDeveloperSocialLinks}
       />
 
       <AlertModal 

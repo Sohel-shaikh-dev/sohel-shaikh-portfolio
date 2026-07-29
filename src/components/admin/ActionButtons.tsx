@@ -10,11 +10,13 @@ import { AlertModal } from './AlertModal'
 export function ActionButtons({ 
   id, 
   editUrl, 
-  deleteAction 
+  deleteAction,
+  itemType = 'item'
 }: { 
   id: string, 
   editUrl: string, 
-  deleteAction: (id: string) => Promise<{ success: boolean, error?: string }> 
+  deleteAction: (id: string) => Promise<{ success: boolean, error?: string }>,
+  itemType?: string
 }) {
   const router = useRouter()
   const [isDeleting, setIsDeleting] = useState(false)
@@ -32,7 +34,9 @@ export function ActionButtons({
     setIsDeleting(true)
     const result = await deleteAction(id)
     if (result.success) {
+      showAlert('Success', `${itemType} deleted successfully.`, 'success')
       router.refresh()
+      setIsDeleting(false)
     } else {
       showAlert('Error', result.error || 'Failed to delete item', 'error')
       setIsDeleting(false)
@@ -63,9 +67,9 @@ export function ActionButtons({
 
       <ConfirmModal 
         isOpen={showConfirm}
-        title="Delete Item"
-        message="Are you sure you want to delete this item? This action cannot be undone and will permanently remove it from your portfolio."
-        confirmText="Delete Permanently"
+        title={`Delete ${itemType}`}
+        message={`Are you sure you want to permanently delete this ${itemType}? This action cannot be undone and all associated images and files will also be deleted.`}
+        confirmText="Permanently Delete"
         onConfirm={handleDeleteConfirm}
         onCancel={() => setShowConfirm(false)}
       />

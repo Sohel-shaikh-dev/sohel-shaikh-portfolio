@@ -34,8 +34,11 @@ export async function middleware(request: NextRequest) {
   const url = request.nextUrl.clone()
 
   if (request.nextUrl.pathname.startsWith('/admin')) {
-    if (request.nextUrl.pathname === '/admin/login') {
-      if (user) {
+    const isPublicAdminPath = request.nextUrl.pathname === '/admin/login' || request.nextUrl.pathname === '/admin/forgot-password'
+    
+    if (isPublicAdminPath) {
+      // Allow users to see error messages on the login page even if authenticated
+      if (user && !request.nextUrl.searchParams.has('message')) {
         url.pathname = '/admin'
         return NextResponse.redirect(url)
       }

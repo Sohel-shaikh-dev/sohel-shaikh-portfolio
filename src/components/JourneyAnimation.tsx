@@ -58,7 +58,8 @@ export function JourneyAnimation({ progress, wrapperRef, box1Ref, box2Ref }: Jou
   }, [wrapperRef, box1Ref, box2Ref]);
 
   // Interpolate coordinates. On mobile, the scroll journey is much longer due to stacked sections.
-  const endThreshold = coords.isMobile ? 0.4 : 0.5;
+  // Lowered threshold to make the image reach the About section faster on scroll.
+  const endThreshold = coords.isMobile ? 0.2 : 0.25;
   const x = useTransform(progress, [0, endThreshold], [coords.start.x, coords.end.x]);
   const y = useTransform(progress, [0, endThreshold], [coords.start.y, coords.end.y]);
   const width = useTransform(progress, [0, endThreshold], [coords.start.w, coords.end.w]);
@@ -115,11 +116,11 @@ export function JourneyAnimation({ progress, wrapperRef, box1Ref, box2Ref }: Jou
           zIndex: 40,
           transformOrigin: 'center center'
         }}
-        className="rounded-3xl overflow-hidden shadow-[0_0_40px_rgba(255,1,79,0.4)] border border-primary/20 bg-background pointer-events-auto"
+        className="rounded-lg md:rounded-2xl overflow-hidden shadow-[0_0_40px_rgba(255,1,79,0.4)] border border-primary/20 bg-background pointer-events-auto"
       >
         <ScrollyCanvas 
           progress={progress} 
-          className="w-full h-full object-cover grayscale transition-all duration-700 hover:grayscale-0 hover:scale-110"
+          className="w-full h-full object-cover transition-all duration-300 hover:scale-110"
         />
       </motion.div>
     </div>

@@ -4,20 +4,29 @@ import { useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { UploadCloud } from 'lucide-react'
 import { motion } from 'motion/react'
+import imageCompression from 'browser-image-compression'
 
 export function FileUpload({
   bucket,
   folder = '',
-  accept = '*',
+  accept = 'image/*',
+  maxSizeMB = 5,
+  label = 'Upload File',
+  fileType = 'image',
   onUploadComplete,
 }: {
   bucket: string
   folder?: string
   accept?: string
+  maxSizeMB?: number
+  label?: string
+  fileType?: 'image' | 'document'
   onUploadComplete: (path: string) => void
 }) {
   const [uploading, setUploading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null)
+  const [fileName, setFileName] = useState<string | null>(null)
   const supabase = createClient()
 
   async function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -29,7 +38,35 @@ export function FileUpload({
         throw new Error('You must select a file to upload.')
       }
 
-      const file = event.target.files[0]
+      let file = event.target.files[0]
+
+      if (fileType === 'image') {
+        if (!file.type.startsWith('image/')) {
+          throw new Error('Only image files are allowed.')
+        }
+        setPreviewUrl(URL.createObjectURL(file))
+        
+        // Compress image
+        const options = {
+          maxSizeMB: 1, // Compress to max 1MB
+          maxWidthOrHeight: 1920,
+          useWebWorker: true
+        }
+        file = await imageCompression(file, options)
+      } else {
+        // Document
+        if (accept === 'application/pdf' && file.type !== 'application/pdf') {
+          throw new Error('Only PDF files are allowed.')
+        }
+        setPreviewUrl(null)
+      }
+
+      setFileName(file.name)
+
+      if (file.size > maxSizeMB * 1024 * 1024) {
+        throw new Error(`File size must be less than ${maxSizeMB}MB`)
+      }
+
       const fileExt = file.name.split('.').pop()
       const fileName = `${Math.random().toString(36).substring(2)}_${Date.now()}.${fileExt}`
       const filePath = folder ? `${folder}/${fileName}` : fileName
@@ -47,13 +84,15 @@ export function FileUpload({
       setError(error.message)
     } finally {
       setUploading(false)
+      // Reset input value so same file can be selected again
+      event.target.value = ''
     }
   }
 
   return (
     <motion.div 
       whileHover={{ scale: 0.98 }}
-      className="border border-dashed border-white/10 bg-background neumorphic-inner rounded-2xl p-6 text-center hover:border-primary/50 transition-colors relative overflow-hidden group"
+      className="border border-dashed border-white/10 bg-background neumorphic-inner rounded-2xl p-6 text-center hover:border-primary/50 transition-colors relative overflow-hidden group w-full"
     >
       <input
         type="file"
@@ -69,16 +108,23 @@ export function FileUpload({
       <div className="flex flex-col items-center justify-center gap-3 pointer-events-none relative z-0">
         {uploading ? (
           <div className="w-10 h-10 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto"></div>
+        ) : previewUrl ? (
+          <div className="w-16 h-16 rounded-xl bg-white/5 border border-white/10 p-2 flex items-center justify-center relative overflow-hidden">
+            <img src={previewUrl} alt="Preview" className="w-full h-full object-contain" />
+          </div>
         ) : (
           <div className="w-12 h-12 rounded-xl bg-card border border-white/5 flex items-center justify-center neumorphic text-gray-400 group-hover:text-primary transition-colors">
             <UploadCloud size={20} />
           </div>
         )}
         <p className="text-[12px] font-bold text-gray-400 uppercase tracking-widest mt-2 group-hover:text-white transition-colors">
-          {uploading ? 'Uploading...' : 'Click or drag file to upload'}
+          {uploading ? 'Uploading...' : fileName ? fileName : label}
+        </p>
+        <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">
+          Max {maxSizeMB}MB
         </p>
       </div>
-      {error && <p className="text-red-500 text-[12px] uppercase tracking-widest mt-4 font-bold">{error}</p>}
+      {error && <p className="text-red-500 text-[12px] uppercase tracking-widest mt-4 font-bold relative z-20">{error}</p>}
     </motion.div>
   )
 }

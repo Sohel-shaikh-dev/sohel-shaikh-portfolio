@@ -66,7 +66,7 @@ export function ScrollyCanvas({ progress, className = "" }: ScrollyCanvasProps) 
         const latest = progress.get();
         const frameIndex = Math.min(
           FRAME_COUNT - 1,
-          Math.max(0, Math.floor(latest * FRAME_COUNT))
+          Math.max(0, Math.floor(latest * 2.5 * FRAME_COUNT))
         );
         requestAnimationFrame(() => drawFrame(frameIndex));
       }
@@ -87,10 +87,11 @@ export function ScrollyCanvas({ progress, className = "" }: ScrollyCanvasProps) 
     if (!imagesLoaded) return;
     
     // Calculate which frame to show based on scroll progress (0 to 1)
+    // Multiplied latest by 2.5 so the frame sequence finishes faster, closer to when the image lands in the about section
     // frameIndex is 0-indexed (0 to 239)
     const frameIndex = Math.min(
       FRAME_COUNT - 1,
-      Math.max(0, Math.floor(latest * FRAME_COUNT))
+      Math.max(0, Math.floor(latest * 2.5 * FRAME_COUNT))
     );
 
     requestAnimationFrame(() => drawFrame(frameIndex));

@@ -48,7 +48,7 @@ export function CertificateDetailsModal({ cert, onClose }: { cert: any, onClose:
           exit={{ scale: 0.9, opacity: 0, y: 20 }}
           transition={{ type: 'spring', damping: 25, stiffness: 300 }}
           onClick={(e) => e.stopPropagation()}
-          className="bg-card w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-[2rem] neumorphic relative border border-white/5 flex flex-col md:flex-row"
+          className="bg-card w-full max-w-4xl max-h-[90dvh] overflow-y-auto rounded-[2rem] neumorphic relative border border-white/5 flex flex-col md:flex-row"
         >
           {/* Close Button */}
           <button

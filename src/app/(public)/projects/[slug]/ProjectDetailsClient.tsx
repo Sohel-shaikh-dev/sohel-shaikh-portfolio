@@ -3,9 +3,11 @@
 import { motion } from 'motion/react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { ArrowLeft, ExternalLink, Github, ChevronLeft, ChevronRight, Layout, CheckCircle2, TrendingUp } from 'lucide-react'
 
 export function ProjectDetailsClient({ project, prevProject, nextProject }: { project: any, prevProject: any, nextProject: any }) {
+  const router = useRouter();
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
   const getImageUrl = (path: string) => path ? `${supabaseUrl}/storage/v1/object/public/portfolio-media/${path}` : ''
 
@@ -21,12 +23,22 @@ export function ProjectDetailsClient({ project, prevProject, nextProject }: { pr
     <div className="min-h-screen bg-background text-white pb-20">
       {/* Header / Nav */}
       <nav className="fixed top-0 left-0 w-full z-50 bg-background/80 backdrop-blur-xl border-b border-white/5 px-6 py-4 flex items-center justify-between">
-        <Link 
-          href="/" 
+        <a 
+          href="/#projects"
+          onClick={(e) => {
+            e.preventDefault();
+            const referrer = document.referrer;
+            const origin = window.location.origin;
+            if (referrer === origin + '/' || referrer === origin + '/#projects' || referrer === origin + '/#casestudy') {
+              window.history.back();
+            } else {
+              router.push('/#projects');
+            }
+          }}
           className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors font-bold uppercase tracking-widest text-xs"
         >
           <ArrowLeft size={16} /> Back to Portfolio
-        </Link>
+        </a>
         <div className="flex gap-4">
           {project.github_link && (
             <a 

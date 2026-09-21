@@ -34,19 +34,44 @@ export function CaseStudyGalleryClient({ gallery }: { gallery: any[] }) {
 
   const getMediaUrl = (path: string) => `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/portfolio-media/${path}`;
 
+  useEffect(() => {
+    const handleHashChange = () => {
+      const hash = window.location.hash;
+      if (hash.startsWith('#lightbox-')) {
+        const index = parseInt(hash.replace('#lightbox-', ''), 10);
+        if (!isNaN(index) && index >= 0 && index < gallery.length) {
+          setSelectedIndex(index);
+          setZoomLevel(1);
+          document.body.style.overflow = 'hidden';
+        }
+      } else {
+        setSelectedIndex(null);
+        document.body.style.overflow = 'unset';
+      }
+    };
+    
+    window.addEventListener('hashchange', handleHashChange);
+    handleHashChange(); // Sync on mount
+    return () => {
+      window.removeEventListener('hashchange', handleHashChange);
+      document.body.style.overflow = 'unset';
+    };
+  }, [gallery.length]);
+
   const openLightbox = (index: number) => {
-    setSelectedIndex(index);
-    setZoomLevel(1);
+    // Setting window.location.hash natively pushes a history state and fires hashchange
+    window.location.hash = `lightbox-${index}`;
   };
 
   const closeLightbox = () => {
-    setSelectedIndex(null);
-    setZoomLevel(1);
+    window.history.back();
   };
 
   const nextImage = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (selectedIndex !== null && selectedIndex < gallery.length - 1) {
+      // Replace state to avoid history spam when navigating through images
+      window.history.replaceState(null, '', `#lightbox-${selectedIndex + 1}`);
       setSelectedIndex(selectedIndex + 1);
       setZoomLevel(1);
     }
@@ -55,6 +80,7 @@ export function CaseStudyGalleryClient({ gallery }: { gallery: any[] }) {
   const prevImage = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (selectedIndex !== null && selectedIndex > 0) {
+      window.history.replaceState(null, '', `#lightbox-${selectedIndex - 1}`);
       setSelectedIndex(selectedIndex - 1);
       setZoomLevel(1);
     }

@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowLeft, CheckCircle2, ChevronRight, BarChart3, Target, Lightbulb, PenTool, BrainCircuit, Download, Github, ExternalLink, ArrowRight, BookOpen, AlertTriangle, FileText } from 'lucide-react'
 import { CaseStudyGalleryClient } from '@/components/public/CaseStudyGalleryClient'
+import { ClientBackButton } from '@/components/public/ClientBackButton'
 import Image from 'next/image'
 
 // Generate metadata for SEO
@@ -148,9 +149,7 @@ export default async function CaseStudyPage(props: { params: Promise<{ slug: str
 
       {/* Hero Section */}
       <div className={`w-full max-w-5xl mx-auto px-6 pb-16 ${isPreview ? 'pt-40' : 'pt-32'}`}>
-        <Link href="/" className="inline-flex items-center gap-2 text-gray-500 hover:text-primary transition-colors font-bold uppercase tracking-widest text-xs mb-10 group">
-          <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" /> Back to Portfolio
-        </Link>
+        <ClientBackButton fallbackHref="/#casestudy" />
         
         <div className="flex flex-wrap items-center justify-between gap-6 mb-6">
           <div className="flex items-center gap-3">

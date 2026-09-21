@@ -855,7 +855,7 @@ const PolicyModal = ({ isOpen, onClose, type }: { isOpen: boolean, onClose: () =
         initial={{ opacity: 0, scale: 0.95, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.95, y: 20 }}
-        className="relative w-full max-w-lg bg-card rounded-3xl p-6 md:p-10 neumorphic border border-white/10 shadow-2xl z-10"
+        className="relative w-full max-w-lg max-h-[90dvh] overflow-y-auto no-scrollbar bg-card rounded-3xl p-6 md:p-10 neumorphic border border-white/10 shadow-2xl z-10"
       >
         <button
           onClick={onClose}
@@ -961,31 +961,159 @@ export default function PortfolioClient({
   const [activeSection, setActiveSection] = useState('home');
   const [selectedCert, setSelectedCert] = useState<any>(null);
 
+  // --- Central Navigation Manager ---
+  const isNavigatingRef = useRef(false);
+  const scrollStatePushedRef = useRef(false);
+
+  const syncStateFromHash = React.useCallback((hashStr: string, isBrowserEvent = false) => {
+    const hash = hashStr.replace('#', '');
+    
+    if (isBrowserEvent) {
+      isNavigatingRef.current = true;
+    }
+
+    setIsMenuOpen(false); // Close menu on nav/back
+
+    // Modals
+    if (hash === 'modal-developer') {
+      setIsDeveloperModalOpen(true);
+      setActiveModal(null);
+    } else if (hash === 'modal-privacy') {
+      setActiveModal('privacy');
+      setIsDeveloperModalOpen(false);
+    } else if (hash === 'modal-terms') {
+      setActiveModal('terms');
+      setIsDeveloperModalOpen(false);
+    } else {
+      setIsDeveloperModalOpen(false);
+      setActiveModal(null);
+    }
+
+    // Certifications
+    if (hash.startsWith('cert-')) {
+      const certId = hash.replace('cert-', '');
+      const cert = initialCertifications?.find(c => c.id === certId);
+      if (cert) setSelectedCert(cert);
+      else setSelectedCert(null);
+    } else {
+      setSelectedCert(null);
+    }
+
+    // Sections
+    const sectionIds = ['home', 'about', 'skills', 'experience', 'projects', 'certifications', 'casestudy', 'service', 'contact'];
+    
+    if (sectionIds.includes(hash)) {
+      setActiveSection(hash);
+      if (isBrowserEvent) {
+        if (hash === 'home') {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+          document.getElementById(hash)?.scrollIntoView({ behavior: 'smooth' });
+        }
+      }
+    } else if (hash === '' || hash === 'top' || hash === 'scrolled') {
+      setActiveSection('home');
+      if (isBrowserEvent) {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    if (isBrowserEvent) {
+      setTimeout(() => { isNavigatingRef.current = false; }, 1000);
+    }
+  }, [initialCertifications]);
+
+  useEffect(() => {
+    const onHashChange = () => syncStateFromHash(window.location.hash, true);
+    window.addEventListener('hashchange', onHashChange);
+    syncStateFromHash(window.location.hash, true);
+    return () => window.removeEventListener('hashchange', onHashChange);
+  }, [syncStateFromHash]);
+
   useEffect(() => {
     const handleScroll = () => {
       const sections = ['home', 'about', 'skills', 'experience', 'projects', 'certifications', 'casestudy', 'service', 'contact'];
       let currentSection = 'home';
-      
       for (const section of sections) {
         const element = document.getElementById(section);
         if (element) {
           const rect = element.getBoundingClientRect();
-          if (rect.top <= 120) {
-            currentSection = section;
-          }
+          if (rect.top <= 120) currentSection = section;
         }
       }
-      setActiveSection(currentSection);
-    };
+      
+      if (activeSection !== currentSection) {
+        setActiveSection(currentSection);
+      }
 
-    window.addEventListener('scroll', handleScroll);
+      if (window.scrollY > 200 && !scrollStatePushedRef.current) {
+        scrollStatePushedRef.current = true;
+        if (!isNavigatingRef.current) {
+          window.history.pushState({ ...window.history.state }, '', `#scrolled`);
+        }
+      }
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [activeSection]);
 
-  // Lock body scroll when mobile menu is open
+  // Silent URL replacement on manual scroll to update history stack head
   useEffect(() => {
-    if (isMenuOpen) {
+    if (isNavigatingRef.current) return;
+    
+    const currentHash = window.location.hash;
+    // NEVER overwrite nested states (modals, certs)
+    if (currentHash.startsWith('#modal') || currentHash.startsWith('#cert')) {
+      return; 
+    }
+    
+    const targetHash = `#${activeSection}`;
+    const state = window.history.state || {};
+
+    if (currentHash !== targetHash) {
+       if (state.isLogicalNav) {
+         // First time scrolling away from a logical point. PUSH to preserve the logical point!
+         window.history.pushState({ ...state, isLogicalNav: false, section: activeSection }, '', targetHash);
+       } else {
+         // Already in a scrolling state, or root state. Replace to avoid spam.
+         window.history.replaceState({ ...state, section: activeSection }, '', targetHash === '#home' ? (scrollStatePushedRef.current ? '#scrolled' : '') : targetHash);
+       }
+    }
+  }, [activeSection]);
+
+  const navigateToSection = (section: string) => {
+    const currentHash = window.location.hash.replace('#', '');
+    if (currentHash === section) return;
+
+    isNavigatingRef.current = true;
+    setIsMenuOpen(false);
+    
+    window.history.pushState({ ...window.history.state, isLogicalNav: true, section }, '', `#${section}`);
+    scrollStatePushedRef.current = true; 
+    
+    syncStateFromHash(`#${section}`, false);
+    
+    if (section === 'home') window.scrollTo({ top: 0, behavior: 'smooth' });
+    else document.getElementById(section)?.scrollIntoView({ behavior: 'smooth' });
+
+    setTimeout(() => { isNavigatingRef.current = false; }, 1000);
+  };
+
+  const openNestedState = (hash: string) => {
+    isNavigatingRef.current = true;
+    window.history.pushState({ ...window.history.state }, '', `#${hash}`);
+    syncStateFromHash(`#${hash}`, false);
+    setTimeout(() => { isNavigatingRef.current = false; }, 100);
+  };
+
+  const closeNestedState = () => {
+    window.history.back();
+  };
+
+  // Lock body scroll when mobile menu or modals are open
+  useEffect(() => {
+    if (isMenuOpen || isDeveloperModalOpen || activeModal || selectedCert) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'unset';
@@ -993,7 +1121,7 @@ export default function PortfolioClient({
     return () => {
       document.body.style.overflow = 'unset';
     };
-  }, [isMenuOpen]);
+  }, [isMenuOpen, isDeveloperModalOpen, activeModal, selectedCert]);
 
   const [isPending, startTransition] = useTransition();
   const [alertInfo, setAlertInfo] = useState<{isOpen: boolean, title: string, message: string, type: 'success'|'error'}>({
@@ -1079,8 +1207,7 @@ export default function PortfolioClient({
                 href={link.href}
                 onClick={(e) => {
                   e.preventDefault();
-                  document.querySelector(link.href)?.scrollIntoView({ behavior: 'smooth' });
-                  setIsMenuOpen(false);
+                  navigateToSection(link.href.replace('#', ''));
                 }}
                 className={`px-3 py-2 text-[11px] xl:text-[12px] font-bold uppercase tracking-wider transition-all duration-300 relative whitespace-nowrap ${
                   isActive ? 'text-primary' : 'text-gray-400 hover:text-white hover:bg-white/5 rounded-full'
@@ -1100,7 +1227,7 @@ export default function PortfolioClient({
             
             <div className="flex items-center gap-2 xl:gap-3 ml-2 xl:ml-4 pl-2 xl:pl-4 border-l border-white/10">
               <button
-                onClick={() => setIsDeveloperModalOpen(true)}
+                onClick={() => openNestedState('modal-developer')}
                 className="px-3 xl:px-4 py-2 bg-yellow-500/10 border border-yellow-500/20 text-yellow-500 rounded-full font-semibold text-[11px] xl:text-[13px] hover:scale-105 hover:bg-yellow-500/20 transition-all flex items-center gap-1.5 whitespace-nowrap"
               >
                 <User size={14} />
@@ -1158,8 +1285,7 @@ export default function PortfolioClient({
                   href={link.href}
                   onClick={(e) => {
                     e.preventDefault();
-                    document.querySelector(link.href)?.scrollIntoView({ behavior: 'smooth' });
-                    setIsMenuOpen(false);
+                    navigateToSection(link.href.replace('#', ''));
                   }}
                   className={`group flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all duration-300 ${
                     isActive 
@@ -1186,7 +1312,7 @@ export default function PortfolioClient({
               <div className="flex flex-col gap-4">
                 <button
                   onClick={() => {
-                    setIsDeveloperModalOpen(true);
+                    openNestedState('modal-developer');
                     setIsMenuOpen(false);
                   }}
                   className="group relative w-full py-4 bg-gradient-to-r from-yellow-500/10 to-amber-500/10 border border-yellow-500/30 hover:border-yellow-500/60 rounded-2xl font-bold text-[15px] text-yellow-500 transition-all overflow-hidden shadow-[0_0_15px_rgba(234,179,8,0.1)] hover:shadow-[0_0_25px_rgba(234,179,8,0.2)]"
@@ -1199,7 +1325,10 @@ export default function PortfolioClient({
                 </button>
                 <a
                   href="#contact"
-                  onClick={() => setIsMenuOpen(false)}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    navigateToSection('contact');
+                  }}
                   className="relative w-full py-4 bg-gradient-to-r from-primary to-rose-600 rounded-2xl font-bold text-[15px] text-white shadow-[0_0_20px_rgba(255,1,79,0.4)] hover:shadow-[0_0_30px_rgba(255,1,79,0.6)] hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2.5"
                 >
                   <Send size={18} />
@@ -1828,7 +1957,7 @@ export default function PortfolioClient({
                 key={cert.id || index} 
                 cert={cert} 
                 index={index} 
-                onClick={() => setSelectedCert(cert)} 
+                onClick={() => openNestedState('cert-' + cert.id)} 
               />
             ))}
           </div>
@@ -2192,8 +2321,8 @@ export default function PortfolioClient({
             <div className="flex flex-col md:flex-row items-center gap-4 md:gap-8 text-gray-600 text-lg md:text-sm font-semibold tracking-wider uppercase">
               <span className="hover:text-primary cursor-default transition-colors">© 2026 AI MetaWorld</span>
               <div className="hidden md:block w-px h-4 bg-white/10"></div>
-              <a href="#privacy" onClick={(e) => { e.preventDefault(); setActiveModal('privacy'); }} className="hover:text-white transition-colors">Privacy Policy</a>
-              <a href="#terms" onClick={(e) => { e.preventDefault(); setActiveModal('terms'); }} className="hover:text-white transition-colors">Terms of Service</a>
+              <a href="#privacy" onClick={(e) => { e.preventDefault(); openNestedState('modal-privacy'); }} className="hover:text-white transition-colors">Privacy Policy</a>
+              <a href="#terms" onClick={(e) => { e.preventDefault(); openNestedState('modal-terms'); }} className="hover:text-white transition-colors">Terms of Service</a>
             </div>
 
             <div className="flex items-center justify-center font-medium tracking-wide bg-[#111111]/80 px-4 sm:px-6 py-2.5 sm:py-3 rounded-full border border-white/5 shadow-[0_0_20px_rgba(0,0,0,0.5)] backdrop-blur-sm gap-3 sm:gap-4 max-w-full">
@@ -2201,7 +2330,7 @@ export default function PortfolioClient({
                 Crafted by <span className="text-blue-300 font-semibold tracking-wide">AI MetaWorld</span> <Sparkles className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-yellow-400 fill-yellow-400" />
               </span>
               <div className="w-px h-3 sm:h-4 bg-white/20 shrink-0"></div>
-              <a href="#developer" onClick={(e) => { e.preventDefault(); setIsDeveloperModalOpen(true); }} className="text-[#E8B744] font-bold hover:text-yellow-300 transition-colors uppercase tracking-widest text-[9px] sm:text-[11px] whitespace-nowrap shrink-0">
+              <a href="#developer" onClick={(e) => { e.preventDefault(); openNestedState('modal-developer'); }} className="text-[#E8B744] font-bold hover:text-yellow-300 transition-colors uppercase tracking-widest text-[9px] sm:text-[11px] whitespace-nowrap shrink-0">
                 ABOUT DEVELOPER
               </a>
             </div>
@@ -2213,7 +2342,7 @@ export default function PortfolioClient({
       {selectedCert && (
         <CertificateDetailsModal 
           cert={selectedCert} 
-          onClose={() => setSelectedCert(null)} 
+          onClose={() => closeNestedState()} 
         />
       )}
 
@@ -2223,7 +2352,7 @@ export default function PortfolioClient({
         {activeModal && (
           <PolicyModal
             isOpen={true}
-            onClose={() => setActiveModal(null)}
+            onClose={() => closeNestedState()}
             type={activeModal}
           />
         )}
@@ -2233,8 +2362,7 @@ export default function PortfolioClient({
         isOpen={isDeveloperModalOpen} 
         onClose={() => setIsDeveloperModalOpen(false)} 
         onContactClick={() => {
-          setIsDeveloperModalOpen(false);
-          document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+          navigateToSection('contact');
         }}
         initialSettings={initialSettings}
         initialDeveloperSocialLinks={initialDeveloperSocialLinks}
